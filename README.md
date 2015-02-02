@@ -43,7 +43,7 @@ Supported card types are:
 * Forbrugsforeningen
 * Dankort
 
-(Additional card types are supported by extending the [`payform.cards`](#paymentcards) array.)
+(Additional card types are supported by extending the [`payform.cards`](#payformcards) array.)
 
 ## API
 
