@@ -7,7 +7,7 @@
 
 A general purpose library for building credit card forms, validating inputs, and formatting numbers.
 
-Available via **NPM** (Browserify compatible) and **Bower**.
+Available via **NPM** (Node or Browserify) and **Bower**.
 
 For example, you can make a input act like a credit card field (with number formatting and length restriction):
 
@@ -27,7 +27,7 @@ if (!valid) {
 }
 ```
 
-You can find a full [demo here](http://jondavidjohn.github.io/payform).
+You can find a [demo here](http://jondavidjohn.github.io/payform).
 
 Supported card types are:
 
@@ -43,7 +43,7 @@ Supported card types are:
 * Forbrugsforeningen
 * Dankort
 
-(Additional card types are supported by extending the [`payform.cards`](#paymentcards) array.)
+(Additional card types are supported by extending the [`payform.cards`](#payformcards) array.)
 
 ## API
 
@@ -238,5 +238,5 @@ We recommend you to use `<input type="tel">` which will cause the numeric keyboa
 
 ## A Derived work
 
-This library is derived from all the great work done on [`jquery.payment`](https://github.com/stripe/jquery.payment) by the folks at [Stripe](https://stripe.com/).  This aims to
+This library is derived from a lot of great work done on [`jquery.payment`](https://github.com/stripe/jquery.payment) by the folks at [Stripe](https://stripe.com/).  This aims to
 build upon that work, in a module that can be consumed more easily with node/npm/browserify and without dependencies.

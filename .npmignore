@@ -1,0 +1,6 @@
+bower.json
+.npmignore
+CONTRIBUTING.md
+.travis.yml
+test/*
+src/*
