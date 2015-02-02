@@ -20,7 +20,7 @@
   "main": "dist/payform.js",
   "scripts": {
     "test": "mocha ./test/**_spec.coffee",
-    "build": "coffee -c -o ./dist/ ./src/payform.coffee && uglify -s ./dist/payform.js -o ./dist/payform.min.js && npm test",
+    "build": "coffee -c --no-header -o ./dist/ ./src/payform.coffee && uglify -s ./dist/payform.js -o ./dist/payform.min.js && npm test",
     "watch": "watch 'npm run test'"
   },
   "devDependencies": {

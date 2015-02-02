@@ -1,3 +1,11 @@
+###
+  Payform Javascript Library
+
+  URL: https://github.com/jondavidjohn/payform
+  Author: Jonathan D. Johnson <me@jondavidjohn.com>
+  License: MIT
+  Version: 0.0.0
+###
 ((name, definition) ->
   if module?
     module.exports = definition()
@@ -352,7 +360,7 @@
 
   # Validations
 
-  payform.cardExpiryVal = (value) ->
+  payform.parseCardExpiry = (value) ->
     value = value.replace(/\s/g, '')
     [month, year] = value.split('/', 2)
 
@@ -424,7 +432,7 @@
       # Check against all types
       cvc.length >= 3 and cvc.length <= 4
 
-  payform.cardType = (num) ->
+  payform.parseCardType = (num) ->
     return null unless num
     cardFromNumber(num)?.type or null
 
