@@ -2,15 +2,7 @@
   "name": "payform",
   "version": "0.0.0",
   "description": "A general purpose library for building credit card forms, validating inputs, and formatting numbers.",
-  "keywords": [
-    "payment",
-    "form",
-    "cc",
-    "card",
-    "credit card",
-    "formatting",
-    "validation"
-  ],
+  "keywords": [ "payment", "form", "cc", "card", "credit card", "formatting", "validation" ],
   "author": "Jonathan D. Johnson <me@jondavidjohn.com>",
   "license": "MIT",
   "repository": {

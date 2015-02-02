@@ -10,8 +10,8 @@ Yay, you're interested in helping this thing suck less.  Thank you!
 
 ## Having a problem?
 
-A **great** way to start a discussion about a potential is to simply
-submit a pull that includes a failing test case.  It's really hard to
+A **great** way to start a discussion about a potential issue is to
+submit a pull request including a failing test case.  It's really hard to
 misunderstand a problem presented this way.  This way it's clear what the
 problem is before you spend your valuable time trying to fix it.
 
