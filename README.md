@@ -238,5 +238,5 @@ We recommend you to use `<input type="tel">` which will cause the numeric keyboa
 
 ## A Derived work
 
-This library is derived from all the great work done on [`jquery.payment`]() by the folks at [Stripe]().  This aims to
-build upon that work in a module that can be consumed more easily with node/npm/browserify and without dependencies.
+This library is derived from all the great work done on [`jquery.payment`](https://github.com/stripe/jquery.payment) by the folks at [Stripe](https://stripe.com/).  This aims to
+build upon that work, in a module that can be consumed more easily with node/npm/browserify and without dependencies.
