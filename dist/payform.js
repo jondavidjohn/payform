@@ -5,7 +5,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 0.0.0
+  Version: 1.0.0
  */
 
 (function() {
