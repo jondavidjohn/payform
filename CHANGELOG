@@ -1,2 +1,5 @@
+= unreleased
+  * Fix cursor issue when editing fields
+
 = 1.0.0
   * Initial Release

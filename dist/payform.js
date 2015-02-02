@@ -157,9 +157,13 @@
       return target.value = target.value.replace(/\D/g, '');
     };
     reFormatCardNumber = function(e) {
-      var target;
+      var cursor, target;
       target = e.target || e.srcElement;
-      return target.value = payform.formatCardNumber(target.value);
+      cursor = target.selectionStart;
+      target.value = payform.formatCardNumber(target.value);
+      if (cursor != null) {
+        return target.setSelectionRange(cursor, cursor);
+      }
     };
     formatCardNumber = function(e) {
       var card, digit, length, re, target, upperLength, value;
@@ -221,11 +225,13 @@
       }
     };
     reFormatExpiry = function(e) {
-      return setTimeout(function() {
-        var target;
-        target = e.target || e.srcElement;
-        return target.value = payform.formatCardExpiry(target.value);
-      });
+      var cursor, target;
+      target = e.target || e.srcElement;
+      cursor = target.selectionStart;
+      target.value = payform.formatCardExpiry(target.value);
+      if (cursor != null) {
+        return target.setSelectionRange(cursor, cursor);
+      }
     };
     formatCardExpiry = function(e) {
       var digit, target, val;
@@ -290,9 +296,13 @@
     };
     reFormatCVC = function(e) {
       return setTimeout(function() {
-        var target;
+        var cursor, target;
         target = e.target || e.srcElement;
-        return target.value = target.value.replace(/\D/g, '').slice(0, 4);
+        cursor = target.selectionStart;
+        target.value = target.value.replace(/\D/g, '').slice(0, 4);
+        if (cursor != null) {
+          return target.setSelectionRange(cursor, cursor);
+        }
       });
     };
     restrictNumeric = function(e) {
