@@ -236,7 +236,7 @@ We recommend you to use `<input type="tel">` which will cause the numeric keyboa
 <input type="tel" class="cc-number">
 ```
 
-## A Derived work
+## A derived work
 
 This library is derived from a lot of great work done on [`jquery.payment`](https://github.com/stripe/jquery.payment) by the folks at [Stripe](https://stripe.com/).  This aims to
 build upon that work, in a module that can be consumed more easily with node/npm/browserify and without dependencies.
