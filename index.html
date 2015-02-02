@@ -16,29 +16,46 @@
     <div class="wrapper">
       <header>
         <h1>payform</h1>
-        <p>A general purpose library for building credit card forms, validating inputs and formatting numbers.</p>
+        <p>A general purpose library for building credit card forms, validating inputs, and formatting numbers.</p>
 
-        <p class="view"><a href="https://github.com/jondavidjohn/payform">View the Project on GitHub <small>jondavidjohn/payform</small></a></p>
-
-
+        <p><a href="https://travis-ci.org/jondavidjohn/payform"><img src="https://travis-ci.org/jondavidjohn/payform.svg?branch=master" alt="Build Status"></a>
+<img src="https://david-dm.org/jondavidjohn/payform.svg" alt="Dependencies"></p>
+<p><a href="https://npmjs.org/package/payform"><img src="https://nodei.co/npm/payform.png" alt="NPM"></a></p> 
         <ul>
           <li><a href="https://github.com/jondavidjohn/payform/zipball/master">Download <strong>ZIP File</strong></a></li>
           <li><a href="https://github.com/jondavidjohn/payform/tarball/master">Download <strong>TAR Ball</strong></a></li>
           <li><a href="https://github.com/jondavidjohn/payform">View On <strong>GitHub</strong></a></li>
         </ul>
+
       </header>
       <section>
-        <p><a href="https://travis-ci.org/jondavidjohn/payform"><img src="https://travis-ci.org/jondavidjohn/payform.svg?branch=master" alt="Build Status"></a>
-<img src="https://david-dm.org/jondavidjohn/payform.svg" alt="Dependencies"></p>
-
-<p><a href="https://npmjs.org/package/payform"><img src="https://nodei.co/npm/payform.png" alt="NPM"></a></p>
-
-<p>A general purpose library for building credit card forms, validating inputs, and formatting numbers.</p>
 
 <h2>
-<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h2>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example <small><a href="#">(view source)</a></small></h2>
 
-<p>ksdflksdfkj</p>
+<div>
+  <span class="field">
+    <label for="ccnum">Card Number <small id="ccnum-type"></small></label>
+    <input placeholder="---- ---- ---- ----" type="tel" name="ccnum" value="" id="ccnum">
+  </span>
+</div>
+
+<div class="">
+  <span class="field">
+    <label for="expiry">Expiration</label>
+    <input placeholder="-- / --" size="7" type="tel" name="expiry" value="" id="expiry">
+  </span>
+
+  <span class="cvc field">
+    <label for="cvc">CVC</label>
+    <input placeholder="---"  size="4" type="tel" name="cvc" value="" id="cvc">
+  </span>
+</div>
+
+
+<button id="submit">Submit</button> <span id="complete"></span>
+
+
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/jondavidjohn">jondavidjohn</a></p>
@@ -46,6 +63,8 @@
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
+    <script src="javascripts/payform.min.js"></script>
+    <script src="javascripts/form.js"></script>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
