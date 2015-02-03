@@ -144,13 +144,6 @@
 
   # Private
 
-  # Format Numeric
-
-  reFormatNumeric = (e) ->
-    setTimeout ->
-      target = e.target or e.srcElement
-      target.value = target.value.replace(/\D/g, '')
-
   # Format Card Number
 
   reFormatCardNumber = (e) ->
