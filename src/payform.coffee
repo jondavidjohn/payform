@@ -4,7 +4,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.0.0
+  Version: 1.0.1
 ###
 ((name, definition) ->
   if module?
@@ -147,14 +147,19 @@
   # Format Numeric
 
   reFormatNumeric = (e) ->
-    target = e.target or e.srcElement
-    target.value = target.value.replace(/\D/g, '')
+    setTimeout ->
+      target = e.target or e.srcElement
+      target.value = target.value.replace(/\D/g, '')
 
   # Format Card Number
 
   reFormatCardNumber = (e) ->
-    target = e.target or e.srcElement
-    target.value = payform.formatCardNumber(target.value)
+    setTimeout ->
+      target = e.target or e.srcElement
+      cursor = target.selectionStart
+      target.value = payform.formatCardNumber(target.value)
+      if cursor?
+        target.setSelectionRange(cursor, cursor)
 
   formatCardNumber = (e) ->
     # Only format if input is a number
@@ -213,7 +218,10 @@
   reFormatExpiry = (e) ->
     setTimeout ->
       target = e.target or e.srcElement
+      cursor = target.selectionStart
       target.value = payform.formatCardExpiry(target.value)
+      if cursor?
+        target.setSelectionRange(cursor, cursor)
 
   formatCardExpiry = (e) ->
     # Only format if input is a number
@@ -271,7 +279,10 @@
   reFormatCVC = (e) ->
     setTimeout ->
       target = e.target or e.srcElement
+      cursor = target.selectionStart
       target.value = target.value.replace(/\D/g, '')[0...4]
+      if cursor?
+        target.setSelectionRange(cursor, cursor)
 
   # Restrictions
 

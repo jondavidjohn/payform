@@ -5,7 +5,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.0.0
+  Version: 1.0.1
  */
 
 (function() {
@@ -152,14 +152,22 @@
       return target.selectionStart && target.selectionStart !== target.selectionEnd;
     };
     reFormatNumeric = function(e) {
-      var target;
-      target = e.target || e.srcElement;
-      return target.value = target.value.replace(/\D/g, '');
+      return setTimeout(function() {
+        var target;
+        target = e.target || e.srcElement;
+        return target.value = target.value.replace(/\D/g, '');
+      });
     };
     reFormatCardNumber = function(e) {
-      var target;
-      target = e.target || e.srcElement;
-      return target.value = payform.formatCardNumber(target.value);
+      return setTimeout(function() {
+        var cursor, target;
+        target = e.target || e.srcElement;
+        cursor = target.selectionStart;
+        target.value = payform.formatCardNumber(target.value);
+        if (cursor != null) {
+          return target.setSelectionRange(cursor, cursor);
+        }
+      });
     };
     formatCardNumber = function(e) {
       var card, digit, length, re, target, upperLength, value;
@@ -222,9 +230,13 @@
     };
     reFormatExpiry = function(e) {
       return setTimeout(function() {
-        var target;
+        var cursor, target;
         target = e.target || e.srcElement;
-        return target.value = payform.formatCardExpiry(target.value);
+        cursor = target.selectionStart;
+        target.value = payform.formatCardExpiry(target.value);
+        if (cursor != null) {
+          return target.setSelectionRange(cursor, cursor);
+        }
       });
     };
     formatCardExpiry = function(e) {
@@ -290,9 +302,13 @@
     };
     reFormatCVC = function(e) {
       return setTimeout(function() {
-        var target;
+        var cursor, target;
         target = e.target || e.srcElement;
-        return target.value = target.value.replace(/\D/g, '').slice(0, 4);
+        cursor = target.selectionStart;
+        target.value = target.value.replace(/\D/g, '').slice(0, 4);
+        if (cursor != null) {
+          return target.setSelectionRange(cursor, cursor);
+        }
       });
     };
     restrictNumeric = function(e) {
