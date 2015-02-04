@@ -151,7 +151,7 @@
       target = e.target or e.srcElement
       cursor = target.selectionStart
       target.value = payform.formatCardNumber(target.value)
-      if cursor?
+      if cursor? and e.type isnt 'change'
         target.setSelectionRange(cursor, cursor)
 
   formatCardNumber = (e) ->
@@ -213,7 +213,7 @@
       target = e.target or e.srcElement
       cursor = target.selectionStart
       target.value = payform.formatCardExpiry(target.value)
-      if cursor?
+      if cursor? and e.type isnt 'change'
         target.setSelectionRange(cursor, cursor)
 
   formatCardExpiry = (e) ->
@@ -274,7 +274,7 @@
       target = e.target or e.srcElement
       cursor = target.selectionStart
       target.value = target.value.replace(/\D/g, '')[0...4]
-      if cursor?
+      if cursor? and e.type isnt 'change'
         target.setSelectionRange(cursor, cursor)
 
   # Restrictions
