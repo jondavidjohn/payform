@@ -21,7 +21,7 @@ Supported card types:
 * Forbrugsforeningen
 * Dankort
 
-(Custom card types are [supported](#custom-cards))
+(Custom card types are also [supported](#custom-cards))
 
 Works in IE8+ and all other modern browsers.
 
