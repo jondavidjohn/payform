@@ -20,7 +20,21 @@
       return this[name] = definition();
     }
   })('payform', function() {
-    var cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric, _eventNormalize, _on;
+    var cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric, _eventNormalize, _getCaretPos, _on;
+    _getCaretPos = function(ele) {
+      var r, rc, re;
+      if (ele.selectionStart != null) {
+        return ele.selectionStart;
+      } else if (document.selection != null) {
+        ele.focus();
+        r = document.selection.createRange();
+        re = ele.createTextRange();
+        rc = re.duplicate();
+        re.moveToBookmark(r.getBookmark());
+        rc.setEndPoint('EndToStart', re);
+        return rc.text.length;
+      }
+    };
     _eventNormalize = function(listener) {
       return function(e) {
         if (e == null) {
@@ -177,7 +191,7 @@
     reFormatCardNumber = function(e) {
       return setTimeout(function() {
         var cursor;
-        cursor = e.target.selectionStart;
+        cursor = _getCaretPos(e.target);
         e.target.value = payform.formatCardNumber(e.target.value);
         if ((cursor != null) && e.type !== 'change') {
           return e.target.setSelectionRange(cursor, cursor);
@@ -244,7 +258,7 @@
     reFormatExpiry = function(e) {
       return setTimeout(function() {
         var cursor;
-        cursor = e.target.selectionStart;
+        cursor = _getCaretPos(e.target);
         e.target.value = payform.formatCardExpiry(e.target.value);
         if ((cursor != null) && e.type !== 'change') {
           return e.target.setSelectionRange(cursor, cursor);
@@ -311,7 +325,7 @@
     reFormatCVC = function(e) {
       return setTimeout(function() {
         var cursor;
-        cursor = e.target.selectionStart;
+        cursor = _getCaretPos(e.target);
         e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
         if ((cursor != null) && e.type !== 'change') {
           return e.target.setSelectionRange(cursor, cursor);

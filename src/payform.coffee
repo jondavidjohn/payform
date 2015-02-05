@@ -15,6 +15,18 @@
     this[name] = definition()
 )('payform', ->
 
+  _getCaretPos = (ele) ->
+    if ele.selectionStart?
+      return ele.selectionStart
+    else if document.selection?
+      ele.focus()
+      r = document.selection.createRange()
+      re = ele.createTextRange()
+      rc = re.duplicate()
+      re.moveToBookmark(r.getBookmark())
+      rc.setEndPoint('EndToStart', re)
+      return rc.text.length
+
   _eventNormalize = (listener) ->
     return (e = window.event) ->
       e.target = e.target or e.srcElement
@@ -163,7 +175,7 @@
 
   reFormatCardNumber = (e) ->
     setTimeout ->
-      cursor = e.target.selectionStart
+      cursor = _getCaretPos(e.target)
       e.target.value = payform.formatCardNumber(e.target.value)
       if cursor? and e.type isnt 'change'
         e.target.setSelectionRange(cursor, cursor)
@@ -222,7 +234,7 @@
 
   reFormatExpiry = (e) ->
     setTimeout ->
-      cursor = e.target.selectionStart
+      cursor = _getCaretPos(e.target)
       e.target.value = payform.formatCardExpiry(e.target.value)
       if cursor? and e.type isnt 'change'
         e.target.setSelectionRange(cursor, cursor)
@@ -278,7 +290,7 @@
 
   reFormatCVC = (e) ->
     setTimeout ->
-      cursor = e.target.selectionStart
+      cursor = _getCaretPos(e.target)
       e.target.value = e.target.value.replace(/\D/g, '')[0...4]
       if cursor? and e.type isnt 'change'
         e.target.setSelectionRange(cursor, cursor)
