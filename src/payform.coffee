@@ -140,7 +140,7 @@
     # If some text is selected in IE
     if document?.selection?.createRange?
       return true if document.selection.createRange().text
-    target.selectionStart and target.selectionStart isnt target.selectionEnd
+    target.selectionStart? and target.selectionStart isnt target.selectionEnd
 
   # Private
 

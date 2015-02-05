@@ -149,7 +149,7 @@
           return true;
         }
       }
-      return target.selectionStart && target.selectionStart !== target.selectionEnd;
+      return (target.selectionStart != null) && target.selectionStart !== target.selectionEnd;
     };
     reFormatCardNumber = function(e) {
       return setTimeout(function() {
