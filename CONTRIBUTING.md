@@ -20,6 +20,14 @@ problem is before you spend your valuable time trying to fix it.
 Again, guard your time and effort.  Make sure that you don't spend a lot
 of time on an improvement without talking through it first.
 
+## Getting to work
+
+```sh
+npm install
+npm run build
+npm test
+```
+
 ## Pull Requests
 
 **Make sure to send pull requests to `develop`.**
