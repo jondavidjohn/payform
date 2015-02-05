@@ -45,17 +45,31 @@ payform.validateCardNumber('4242 4242 4242 4242'); //=> true
 payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
 ```
 
-[Full API Doc](#api)
+### AMD / Require.js
+
+```javascript
+require.config({
+    paths: { "payform": "path/to/payform" }
+});
+
+require(["payform"], function (payform) {
+  // Validate a credit card number
+  payform.validateCardNumber('4242 4242 4242 4242'); //=> true
+
+  // Get card type from number
+  payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
+});
+```
 
 ### Direct script include / Bower
 
 Optionally via bower (or simply via download)
-```
+```sh
 bower install payform --save
 ```
 
 ```html
-<script src="dist/payform.js"></script>
+<script src="path/to/payform/dist/payform.js"></script>
 <script>
   // Validate a credit card number
   payform.validateCardNumber('4242 4242 4242 4242'); //=> true
@@ -64,9 +78,6 @@ bower install payform --save
   payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
 </script>
 ```
-
-[Full API Doc](#api)
-
 
 ## API
 

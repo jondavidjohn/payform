@@ -10,7 +10,7 @@
   if module?
     module.exports = definition()
   else if typeof define is 'function' and typeof define.amd is 'object'
-    define(definition)
+    define(name, definition)
   else
     this[name] = definition()
 )('payform', ->
