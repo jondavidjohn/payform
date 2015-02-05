@@ -189,17 +189,15 @@
       return (target.selectionStart != null) && target.selectionStart !== target.selectionEnd;
     };
     reFormatCardNumber = function(e) {
-      return setTimeout(function() {
-        var cursor;
-        cursor = _getCaretPos(e.target);
-        e.target.value = payform.formatCardNumber(e.target.value);
-        if ((cursor != null) && e.type !== 'change') {
-          return e.target.setSelectionRange(cursor, cursor);
-        }
-      });
+      var cursor;
+      cursor = _getCaretPos(e.target);
+      e.target.value = payform.formatCardNumber(e.target.value);
+      if ((cursor != null) && e.type !== 'change') {
+        return e.target.setSelectionRange(cursor, cursor);
+      }
     };
     formatCardNumber = function(e) {
-      var card, digit, length, re, upperLength, value;
+      var card, cursor, digit, length, re, upperLength, value;
       digit = String.fromCharCode(e.which);
       if (!/^\d+$/.test(digit)) {
         return;
@@ -214,7 +212,8 @@
       if (length >= upperLength) {
         return;
       }
-      if ((e.target.selectionStart != null) && e.target.selectionStart !== value.length) {
+      cursor = _getCaretPos(e.target);
+      if (cursor && cursor !== value.length) {
         return;
       }
       if (card && card.type === 'amex') {
@@ -235,12 +234,13 @@
       }
     };
     formatBackCardNumber = function(e) {
-      var value;
+      var cursor, value;
       value = e.target.value;
       if (e.which !== 8) {
         return;
       }
-      if ((e.target.selectionStart != null) && e.target.selectionStart !== value.length) {
+      cursor = _getCaretPos(e.target);
+      if (cursor && cursor !== value.length) {
         return;
       }
       if (/\d\s$/.test(value)) {
@@ -256,14 +256,12 @@
       }
     };
     reFormatExpiry = function(e) {
-      return setTimeout(function() {
-        var cursor;
-        cursor = _getCaretPos(e.target);
-        e.target.value = payform.formatCardExpiry(e.target.value);
-        if ((cursor != null) && e.type !== 'change') {
-          return e.target.setSelectionRange(cursor, cursor);
-        }
-      });
+      var cursor;
+      cursor = _getCaretPos(e.target);
+      e.target.value = payform.formatCardExpiry(e.target.value);
+      if ((cursor != null) && e.type !== 'change') {
+        return e.target.setSelectionRange(cursor, cursor);
+      }
     };
     formatCardExpiry = function(e) {
       var digit, val;
@@ -307,12 +305,13 @@
       }
     };
     formatBackExpiry = function(e) {
-      var value;
+      var cursor, value;
       value = e.target.value;
       if (e.which !== 8) {
         return;
       }
-      if ((e.target.selectionStart != null) && e.target.selectionStart !== value.length) {
+      cursor = _getCaretPos(e.target);
+      if (cursor && cursor !== value.length) {
         return;
       }
       if (/\d\s\/\s$/.test(value)) {
@@ -323,14 +322,12 @@
       }
     };
     reFormatCVC = function(e) {
-      return setTimeout(function() {
-        var cursor;
-        cursor = _getCaretPos(e.target);
-        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
-        if ((cursor != null) && e.type !== 'change') {
-          return e.target.setSelectionRange(cursor, cursor);
-        }
-      });
+      var cursor;
+      cursor = _getCaretPos(e.target);
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+      if ((cursor != null) && e.type !== 'change') {
+        return e.target.setSelectionRange(cursor, cursor);
+      }
     };
     restrictNumeric = function(e) {
       var input;

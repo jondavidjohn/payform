@@ -174,27 +174,27 @@
   # Format Card Number
 
   reFormatCardNumber = (e) ->
-    setTimeout ->
-      cursor = _getCaretPos(e.target)
-      e.target.value = payform.formatCardNumber(e.target.value)
-      if cursor? and e.type isnt 'change'
-        e.target.setSelectionRange(cursor, cursor)
+    cursor = _getCaretPos(e.target)
+    e.target.value = payform.formatCardNumber(e.target.value)
+    if cursor? and e.type isnt 'change'
+      e.target.setSelectionRange(cursor, cursor)
 
   formatCardNumber = (e) ->
     # Only format if input is a number
     digit = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
 
-    value   = e.target.value
-    card    = cardFromNumber(value + digit)
-    length  = (value.replace(/\D/g, '') + digit).length
+    value  = e.target.value
+    card   = cardFromNumber(value + digit)
+    length = (value.replace(/\D/g, '') + digit).length
 
     upperLength = 16
     upperLength = card.length[card.length.length - 1] if card
     return if length >= upperLength
 
     # Return if focus isn't at the end of the text
-    return if e.target.selectionStart? and e.target.selectionStart isnt value.length
+    cursor = _getCaretPos(e.target)
+    return if cursor and cursor isnt value.length
 
     if card && card.type is 'amex'
       # AMEX cards are formatted differently
@@ -213,13 +213,14 @@
       setTimeout -> e.target.value = "#{value + digit} "
 
   formatBackCardNumber = (e) ->
-    value  = e.target.value
+    value = e.target.value
 
     # Return unless backspacing
     return unless e.which is 8
 
     # Return if focus isn't at the end of the text
-    return if e.target.selectionStart? and e.target.selectionStart isnt value.length
+    cursor = _getCaretPos(e.target)
+    return if cursor and cursor isnt value.length
 
     # Remove the digit + trailing space
     if /\d\s$/.test(value)
@@ -233,18 +234,17 @@
   # Format Expiry
 
   reFormatExpiry = (e) ->
-    setTimeout ->
-      cursor = _getCaretPos(e.target)
-      e.target.value = payform.formatCardExpiry(e.target.value)
-      if cursor? and e.type isnt 'change'
-        e.target.setSelectionRange(cursor, cursor)
+    cursor = _getCaretPos(e.target)
+    e.target.value = payform.formatCardExpiry(e.target.value)
+    if cursor? and e.type isnt 'change'
+      e.target.setSelectionRange(cursor, cursor)
 
   formatCardExpiry = (e) ->
     # Only format if input is a number
     digit = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
 
-    val    = e.target.value + digit
+    val = e.target.value + digit
 
     if /^\d$/.test(val) and val not in ['0', '1']
       e.preventDefault()
@@ -257,29 +257,26 @@
   formatForwardExpiry = (e) ->
     digit = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
-
-    val    = e.target.value
-
+    val = e.target.value
     if /^\d\d$/.test(val)
       e.target.value = "#{val} / "
 
   formatForwardSlashAndSpace = (e) ->
     which = String.fromCharCode(e.which)
     return unless which is '/' or which is ' '
-
-    val    = e.target.value
-
+    val = e.target.value
     if /^\d$/.test(val) and val isnt '0'
       e.target.value = "0#{val} / "
 
   formatBackExpiry = (e) ->
-    value  = e.target.value
+    value = e.target.value
 
     # Return unless backspacing
     return unless e.which is 8
 
     # Return if focus isn't at the end of the text
-    return if e.target.selectionStart? and e.target.selectionStart isnt value.length
+    cursor = _getCaretPos(e.target)
+    return if cursor and cursor isnt value.length
 
     # Remove the trailing space + last digit
     if /\d\s\/\s$/.test(value)
@@ -289,11 +286,10 @@
   # Format CVC
 
   reFormatCVC = (e) ->
-    setTimeout ->
-      cursor = _getCaretPos(e.target)
-      e.target.value = e.target.value.replace(/\D/g, '')[0...4]
-      if cursor? and e.type isnt 'change'
-        e.target.setSelectionRange(cursor, cursor)
+    cursor = _getCaretPos(e.target)
+    e.target.value = e.target.value.replace(/\D/g, '')[0...4]
+    if cursor? and e.type isnt 'change'
+      e.target.setSelectionRange(cursor, cursor)
 
   # Restrictions
 

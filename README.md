@@ -7,7 +7,7 @@
 
 A general purpose library for building credit card forms, validating inputs, and formatting numbers.
 
-Available via **NPM** (Node or Browserify) and **Bower**.
+Available via **NPM** (Node or Browserify) and **Bower**.  Supports IE8+.
 
 For example, you can make a input act like a credit card field (with number formatting and length restriction):
 
