@@ -20,7 +20,7 @@
       return this[name] = definition();
     }
   })('payform', function() {
-    var cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, reFormatNumeric, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
+    var cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
     payform = {};
     defaultFormat = /(\d{1,4})/g;
     payform.cards = [
@@ -151,20 +151,13 @@
       }
       return target.selectionStart && target.selectionStart !== target.selectionEnd;
     };
-    reFormatNumeric = function(e) {
-      return setTimeout(function() {
-        var target;
-        target = e.target || e.srcElement;
-        return target.value = target.value.replace(/\D/g, '');
-      });
-    };
     reFormatCardNumber = function(e) {
       return setTimeout(function() {
         var cursor, target;
         target = e.target || e.srcElement;
         cursor = target.selectionStart;
         target.value = payform.formatCardNumber(target.value);
-        if (cursor != null) {
+        if ((cursor != null) && e.type !== 'change') {
           return target.setSelectionRange(cursor, cursor);
         }
       });
@@ -234,7 +227,7 @@
         target = e.target || e.srcElement;
         cursor = target.selectionStart;
         target.value = payform.formatCardExpiry(target.value);
-        if (cursor != null) {
+        if ((cursor != null) && e.type !== 'change') {
           return target.setSelectionRange(cursor, cursor);
         }
       });
@@ -306,7 +299,7 @@
         target = e.target || e.srcElement;
         cursor = target.selectionStart;
         target.value = target.value.replace(/\D/g, '').slice(0, 4);
-        if (cursor != null) {
+        if ((cursor != null) && e.type !== 'change') {
           return target.setSelectionRange(cursor, cursor);
         }
       });
@@ -365,6 +358,9 @@
       var digit, target, val;
       target = e.target || e.srcElement;
       digit = String.fromCharCode(e.which);
+      if (!/^\d+$/.test(digit)) {
+        return;
+      }
       if (hasTextSelected(target)) {
         return;
       }
@@ -512,10 +508,14 @@
       mon = parts[1] || '';
       sep = parts[2] || '';
       year = parts[3] || '';
-      if (year.length > 0 || (sep.length > 0 && !(/\ \/?\ ?/.test(sep)))) {
+      if (year.length > 0) {
         sep = ' / ';
-      }
-      if (mon.length === 1 && (mon !== '0' && mon !== '1')) {
+      } else if (sep === ' /') {
+        mon = mon.substring(0, 1);
+        sep = '';
+      } else if (mon.length === 2 || sep.length > 0) {
+        sep = ' / ';
+      } else if (mon.length === 1 && (mon !== '0' && mon !== '1')) {
         mon = "0" + mon;
         sep = ' / ';
       }

@@ -327,6 +327,7 @@
   restrictCVC = (e) ->
     target = e.target or e.srcElement
     digit  = String.fromCharCode(e.which)
+    return unless /^\d+$/.test(digit)
     return if hasTextSelected(target)
     val = target.value + digit
     if val.length > 4
