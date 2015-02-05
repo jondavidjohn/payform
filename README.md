@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/jondavidjohn/payform.svg?branch=master)](https://travis-ci.org/jondavidjohn/payform)
 ![Dependencies](https://david-dm.org/jondavidjohn/payform.svg)
 
-[![NPM](https://nodei.co/npm/payform.png)](https://npmjs.org/package/payform)
+[![npm](https://nodei.co/npm/payform.png)](https://npmjs.org/package/payform)
 
 A general purpose library for building credit card forms, validating inputs, and formatting numbers.
 
@@ -29,7 +29,7 @@ Works in IE8+ and all other modern browsers.
 
 ## Installation / Usage
 
-### NPM (Node and Browserify)
+### npm (Node and Browserify)
 
 ```sh
 npm install payform --save
@@ -263,4 +263,4 @@ We recommend you to use `<input type="tel">` which will cause the numeric keyboa
 ## A derived work
 
 This library is derived from a lot of great work done on [`jquery.payment`](https://github.com/stripe/jquery.payment) by the folks at [Stripe](https://stripe.com/).  This aims to
-build upon that work, in a module that can be consumed more easily with node/npm/browserify and without dependencies.
+build upon that work, in a module that can be consumed in more diverse situations.
