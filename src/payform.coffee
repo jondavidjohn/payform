@@ -15,6 +15,33 @@
     this[name] = definition()
 )('payform', ->
 
+  _getCaretPos = (ele) ->
+    if ele.selectionStart?
+      return ele.selectionStart
+    else if document.selection?
+      ele.focus()
+      r = document.selection.createRange()
+      re = ele.createTextRange()
+      rc = re.duplicate()
+      re.moveToBookmark(r.getBookmark())
+      rc.setEndPoint('EndToStart', re)
+      return rc.text.length
+
+  _eventNormalize = (listener) ->
+    return (e = window.event) ->
+      e.target = e.target or e.srcElement
+      e.which = e.which or e.keyCode
+      unless e.preventDefault?
+        e.preventDefault = -> this.returnValue = false
+      listener(e)
+
+  _on = (ele, event, listener) ->
+    listener = _eventNormalize(listener)
+    if ele.addEventListener?
+      ele.addEventListener(event, listener, false)
+    else
+      ele.attachEvent("on#{event}", listener)
+
   payform = {}
 
   # Utils
@@ -147,29 +174,27 @@
   # Format Card Number
 
   reFormatCardNumber = (e) ->
-    setTimeout ->
-      target = e.target or e.srcElement
-      cursor = target.selectionStart
-      target.value = payform.formatCardNumber(target.value)
-      if cursor? and e.type isnt 'change'
-        target.setSelectionRange(cursor, cursor)
+    cursor = _getCaretPos(e.target)
+    e.target.value = payform.formatCardNumber(e.target.value)
+    if cursor? and e.type isnt 'change'
+      e.target.setSelectionRange(cursor, cursor)
 
   formatCardNumber = (e) ->
     # Only format if input is a number
     digit = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
 
-    target  = e.target or e.srcElement
-    value   = target.value
-    card    = cardFromNumber(value + digit)
-    length  = (value.replace(/\D/g, '') + digit).length
+    value  = e.target.value
+    card   = cardFromNumber(value + digit)
+    length = (value.replace(/\D/g, '') + digit).length
 
     upperLength = 16
     upperLength = card.length[card.length.length - 1] if card
     return if length >= upperLength
 
     # Return if focus isn't at the end of the text
-    return if target.selectionStart? and target.selectionStart isnt value.length
+    cursor = _getCaretPos(e.target)
+    return if cursor and cursor isnt value.length
 
     if card && card.type is 'amex'
       # AMEX cards are formatted differently
@@ -180,102 +205,91 @@
     # If '4242' + 4
     if re.test(value)
       e.preventDefault()
-      setTimeout -> target.value = "#{value} #{digit}"
+      setTimeout -> e.target.value = "#{value} #{digit}"
 
     # If '424' + 2
     else if re.test(value + digit)
       e.preventDefault()
-      setTimeout -> target.value = "#{value + digit} "
+      setTimeout -> e.target.value = "#{value + digit} "
 
   formatBackCardNumber = (e) ->
-    target = e.target or e.srcElement
-    value  = target.value
+    value = e.target.value
 
     # Return unless backspacing
     return unless e.which is 8
 
     # Return if focus isn't at the end of the text
-    return if target.selectionStart? and target.selectionStart isnt value.length
+    cursor = _getCaretPos(e.target)
+    return if cursor and cursor isnt value.length
 
     # Remove the digit + trailing space
     if /\d\s$/.test(value)
       e.preventDefault()
-      setTimeout -> target.value = value.replace /\d\s$/, ''
+      setTimeout -> e.target.value = value.replace /\d\s$/, ''
     # Remove digit if ends in space + digit
     else if /\s\d?$/.test(value)
       e.preventDefault()
-      setTimeout -> target.value = value.replace /\d$/, ''
+      setTimeout -> e.target.value = value.replace /\d$/, ''
 
   # Format Expiry
 
   reFormatExpiry = (e) ->
-    setTimeout ->
-      target = e.target or e.srcElement
-      cursor = target.selectionStart
-      target.value = payform.formatCardExpiry(target.value)
-      if cursor? and e.type isnt 'change'
-        target.setSelectionRange(cursor, cursor)
+    cursor = _getCaretPos(e.target)
+    e.target.value = payform.formatCardExpiry(e.target.value)
+    if cursor? and e.type isnt 'change'
+      e.target.setSelectionRange(cursor, cursor)
 
   formatCardExpiry = (e) ->
     # Only format if input is a number
     digit = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
 
-    target = e.target or e.srcElement
-    val    = target.value + digit
+    val = e.target.value + digit
 
     if /^\d$/.test(val) and val not in ['0', '1']
       e.preventDefault()
-      setTimeout -> target.value = "0#{val} / "
+      setTimeout -> e.target.value = "0#{val} / "
 
     else if /^\d\d$/.test(val)
       e.preventDefault()
-      setTimeout -> target.value = "#{val} / "
+      setTimeout -> e.target.value = "#{val} / "
 
   formatForwardExpiry = (e) ->
     digit = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
-
-    target = e.target or e.srcElement
-    val    = target.value
-
+    val = e.target.value
     if /^\d\d$/.test(val)
-      target.value = "#{val} / "
+      e.target.value = "#{val} / "
 
   formatForwardSlashAndSpace = (e) ->
     which = String.fromCharCode(e.which)
     return unless which is '/' or which is ' '
-
-    target = e.target or e.srcElement
-    val    = target.value
-
+    val = e.target.value
     if /^\d$/.test(val) and val isnt '0'
-      target.value = "0#{val} / "
+      e.target.value = "0#{val} / "
 
   formatBackExpiry = (e) ->
-    target = e.target or e.srcElement
-    value  = target.value
+    value = e.target.value
 
     # Return unless backspacing
     return unless e.which is 8
 
     # Return if focus isn't at the end of the text
-    return if target.selectionStart? and target.selectionStart isnt value.length
+    cursor = _getCaretPos(e.target)
+    return if cursor and cursor isnt value.length
 
     # Remove the trailing space + last digit
     if /\d\s\/\s$/.test(value)
       e.preventDefault()
-      setTimeout -> target.value = value.replace(/\d\s\/\s$/, '')
+      setTimeout -> e.target.value = value.replace(/\d\s\/\s$/, '')
 
   # Format CVC
 
   reFormatCVC = (e) ->
-    setTimeout ->
-      target = e.target or e.srcElement
-      cursor = target.selectionStart
-      target.value = target.value.replace(/\D/g, '')[0...4]
-      if cursor? and e.type isnt 'change'
-        target.setSelectionRange(cursor, cursor)
+    cursor = _getCaretPos(e.target)
+    e.target.value = e.target.value.replace(/\D/g, '')[0...4]
+    if cursor? and e.type isnt 'change'
+      e.target.setSelectionRange(cursor, cursor)
 
   # Restrictions
 
@@ -296,14 +310,13 @@
       e.preventDefault()
 
   restrictCardNumber = (e) ->
-    target = e.target or e.srcElement
     digit  = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
 
-    return if hasTextSelected(target)
+    return if hasTextSelected(e.target)
 
     # Restrict number of digits
-    value = (target.value + digit).replace(/\D/g, '')
+    value = (e.target.value + digit).replace(/\D/g, '')
     card  = cardFromNumber(value)
 
     if card and value.length > card.length[card.length.length - 1]
@@ -312,24 +325,22 @@
       e.preventDefault()
 
   restrictExpiry = (e) ->
-    target = e.target or e.srcElement
-    digit   = String.fromCharCode(e.which)
+    digit  = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
 
-    return if hasTextSelected(target)
+    return if hasTextSelected(e.target)
 
-    value = target.value + digit
+    value = e.target.value + digit
     value = value.replace(/\D/g, '')
 
     if value.length > 6
       e.preventDefault()
 
   restrictCVC = (e) ->
-    target = e.target or e.srcElement
     digit  = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
-    return if hasTextSelected(target)
-    val = target.value + digit
+    return if hasTextSelected(e.target)
+    val = e.target.value + digit
     if val.length > 4
       e.preventDefault()
 
@@ -338,30 +349,30 @@
   # Formatting
 
   payform.cvcInput = (input) ->
-    input.addEventListener('keypress', restrictNumeric)
-    input.addEventListener('keypress', restrictCVC)
-    input.addEventListener('paste',    reFormatCVC)
-    input.addEventListener('change',   reFormatCVC)
-    input.addEventListener('input',    reFormatCVC)
+    _on(input, 'keypress', restrictNumeric)
+    _on(input, 'keypress', restrictCVC)
+    _on(input, 'paste',    reFormatCVC)
+    _on(input, 'change',   reFormatCVC)
+    _on(input, 'input',    reFormatCVC)
 
   payform.expiryInput = (input) ->
-    input.addEventListener('keypress', restrictNumeric)
-    input.addEventListener('keypress', restrictExpiry)
-    input.addEventListener('keypress', formatCardExpiry)
-    input.addEventListener('keypress', formatForwardSlashAndSpace)
-    input.addEventListener('keypress', formatForwardExpiry)
-    input.addEventListener('keydown',  formatBackExpiry)
-    input.addEventListener('change',   reFormatExpiry)
-    input.addEventListener('input',    reFormatExpiry)
+    _on(input, 'keypress', restrictNumeric)
+    _on(input, 'keypress', restrictExpiry)
+    _on(input, 'keypress', formatCardExpiry)
+    _on(input, 'keypress', formatForwardSlashAndSpace)
+    _on(input, 'keypress', formatForwardExpiry)
+    _on(input, 'keydown',  formatBackExpiry)
+    _on(input, 'change',   reFormatExpiry)
+    _on(input, 'input',    reFormatExpiry)
 
   payform.cardNumberInput = (input) ->
-    input.addEventListener('keypress', restrictNumeric)
-    input.addEventListener('keypress', restrictCardNumber)
-    input.addEventListener('keypress', formatCardNumber)
-    input.addEventListener('keydown',  formatBackCardNumber)
-    input.addEventListener('paste',    reFormatCardNumber)
-    input.addEventListener('change',   reFormatCardNumber)
-    input.addEventListener('input',    reFormatCardNumber)
+    _on(input, 'keypress', restrictNumeric)
+    _on(input, 'keypress', restrictCardNumber)
+    _on(input, 'keypress', formatCardNumber)
+    _on(input, 'keydown',  formatBackCardNumber)
+    _on(input, 'paste',    reFormatCardNumber)
+    _on(input, 'change',   reFormatCardNumber)
+    _on(input, 'input',    reFormatCardNumber)
 
   # Validations
 
