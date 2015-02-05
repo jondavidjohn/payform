@@ -15,7 +15,7 @@
     if (typeof module !== "undefined" && module !== null) {
       return module.exports = definition();
     } else if (typeof define === 'function' && typeof define.amd === 'object') {
-      return define(definition);
+      return define(name, definition);
     } else {
       return this[name] = definition();
     }
