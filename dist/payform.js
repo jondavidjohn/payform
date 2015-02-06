@@ -5,7 +5,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.0.1
+  Version: 1.0.2
  */
 
 (function() {
@@ -15,12 +15,49 @@
     if (typeof module !== "undefined" && module !== null) {
       return module.exports = definition();
     } else if (typeof define === 'function' && typeof define.amd === 'object') {
-      return define(definition);
+      return define(name, definition);
     } else {
       return this[name] = definition();
     }
   })('payform', function() {
-    var cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, reFormatNumeric, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
+    var cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric, _eventNormalize, _getCaretPos, _on;
+    _getCaretPos = function(ele) {
+      var r, rc, re;
+      if (ele.selectionStart != null) {
+        return ele.selectionStart;
+      } else if (document.selection != null) {
+        ele.focus();
+        r = document.selection.createRange();
+        re = ele.createTextRange();
+        rc = re.duplicate();
+        re.moveToBookmark(r.getBookmark());
+        rc.setEndPoint('EndToStart', re);
+        return rc.text.length;
+      }
+    };
+    _eventNormalize = function(listener) {
+      return function(e) {
+        if (e == null) {
+          e = window.event;
+        }
+        e.target = e.target || e.srcElement;
+        e.which = e.which || e.keyCode;
+        if (e.preventDefault == null) {
+          e.preventDefault = function() {
+            return this.returnValue = false;
+          };
+        }
+        return listener(e);
+      };
+    };
+    _on = function(ele, event, listener) {
+      listener = _eventNormalize(listener);
+      if (ele.addEventListener != null) {
+        return ele.addEventListener(event, listener, false);
+      } else {
+        return ele.attachEvent("on" + event, listener);
+      }
+    };
     payform = {};
     defaultFormat = /(\d{1,4})/g;
     payform.cards = [
@@ -149,34 +186,23 @@
           return true;
         }
       }
-      return target.selectionStart && target.selectionStart !== target.selectionEnd;
-    };
-    reFormatNumeric = function(e) {
-      return setTimeout(function() {
-        var target;
-        target = e.target || e.srcElement;
-        return target.value = target.value.replace(/\D/g, '');
-      });
+      return (target.selectionStart != null) && target.selectionStart !== target.selectionEnd;
     };
     reFormatCardNumber = function(e) {
-      return setTimeout(function() {
-        var cursor, target;
-        target = e.target || e.srcElement;
-        cursor = target.selectionStart;
-        target.value = payform.formatCardNumber(target.value);
-        if (cursor != null) {
-          return target.setSelectionRange(cursor, cursor);
-        }
-      });
+      var cursor;
+      cursor = _getCaretPos(e.target);
+      e.target.value = payform.formatCardNumber(e.target.value);
+      if ((cursor != null) && e.type !== 'change') {
+        return e.target.setSelectionRange(cursor, cursor);
+      }
     };
     formatCardNumber = function(e) {
-      var card, digit, length, re, target, upperLength, value;
+      var card, cursor, digit, length, re, upperLength, value;
       digit = String.fromCharCode(e.which);
       if (!/^\d+$/.test(digit)) {
         return;
       }
-      target = e.target || e.srcElement;
-      value = target.value;
+      value = e.target.value;
       card = cardFromNumber(value + digit);
       length = (value.replace(/\D/g, '') + digit).length;
       upperLength = 16;
@@ -186,7 +212,8 @@
       if (length >= upperLength) {
         return;
       }
-      if ((target.selectionStart != null) && target.selectionStart !== value.length) {
+      cursor = _getCaretPos(e.target);
+      if (cursor && cursor !== value.length) {
         return;
       }
       if (card && card.type === 'amex') {
@@ -197,119 +224,110 @@
       if (re.test(value)) {
         e.preventDefault();
         return setTimeout(function() {
-          return target.value = value + " " + digit;
+          return e.target.value = value + " " + digit;
         });
       } else if (re.test(value + digit)) {
         e.preventDefault();
         return setTimeout(function() {
-          return target.value = (value + digit) + " ";
+          return e.target.value = (value + digit) + " ";
         });
       }
     };
     formatBackCardNumber = function(e) {
-      var target, value;
-      target = e.target || e.srcElement;
-      value = target.value;
+      var cursor, value;
+      value = e.target.value;
       if (e.which !== 8) {
         return;
       }
-      if ((target.selectionStart != null) && target.selectionStart !== value.length) {
+      cursor = _getCaretPos(e.target);
+      if (cursor && cursor !== value.length) {
         return;
       }
       if (/\d\s$/.test(value)) {
         e.preventDefault();
         return setTimeout(function() {
-          return target.value = value.replace(/\d\s$/, '');
+          return e.target.value = value.replace(/\d\s$/, '');
         });
       } else if (/\s\d?$/.test(value)) {
         e.preventDefault();
         return setTimeout(function() {
-          return target.value = value.replace(/\d$/, '');
+          return e.target.value = value.replace(/\d$/, '');
         });
       }
     };
     reFormatExpiry = function(e) {
-      return setTimeout(function() {
-        var cursor, target;
-        target = e.target || e.srcElement;
-        cursor = target.selectionStart;
-        target.value = payform.formatCardExpiry(target.value);
-        if (cursor != null) {
-          return target.setSelectionRange(cursor, cursor);
-        }
-      });
+      var cursor;
+      cursor = _getCaretPos(e.target);
+      e.target.value = payform.formatCardExpiry(e.target.value);
+      if ((cursor != null) && e.type !== 'change') {
+        return e.target.setSelectionRange(cursor, cursor);
+      }
     };
     formatCardExpiry = function(e) {
-      var digit, target, val;
+      var digit, val;
       digit = String.fromCharCode(e.which);
       if (!/^\d+$/.test(digit)) {
         return;
       }
-      target = e.target || e.srcElement;
-      val = target.value + digit;
+      val = e.target.value + digit;
       if (/^\d$/.test(val) && (val !== '0' && val !== '1')) {
         e.preventDefault();
         return setTimeout(function() {
-          return target.value = "0" + val + " / ";
+          return e.target.value = "0" + val + " / ";
         });
       } else if (/^\d\d$/.test(val)) {
         e.preventDefault();
         return setTimeout(function() {
-          return target.value = val + " / ";
+          return e.target.value = val + " / ";
         });
       }
     };
     formatForwardExpiry = function(e) {
-      var digit, target, val;
+      var digit, val;
       digit = String.fromCharCode(e.which);
       if (!/^\d+$/.test(digit)) {
         return;
       }
-      target = e.target || e.srcElement;
-      val = target.value;
+      val = e.target.value;
       if (/^\d\d$/.test(val)) {
-        return target.value = val + " / ";
+        return e.target.value = val + " / ";
       }
     };
     formatForwardSlashAndSpace = function(e) {
-      var target, val, which;
+      var val, which;
       which = String.fromCharCode(e.which);
       if (!(which === '/' || which === ' ')) {
         return;
       }
-      target = e.target || e.srcElement;
-      val = target.value;
+      val = e.target.value;
       if (/^\d$/.test(val) && val !== '0') {
-        return target.value = "0" + val + " / ";
+        return e.target.value = "0" + val + " / ";
       }
     };
     formatBackExpiry = function(e) {
-      var target, value;
-      target = e.target || e.srcElement;
-      value = target.value;
+      var cursor, value;
+      value = e.target.value;
       if (e.which !== 8) {
         return;
       }
-      if ((target.selectionStart != null) && target.selectionStart !== value.length) {
+      cursor = _getCaretPos(e.target);
+      if (cursor && cursor !== value.length) {
         return;
       }
       if (/\d\s\/\s$/.test(value)) {
         e.preventDefault();
         return setTimeout(function() {
-          return target.value = value.replace(/\d\s\/\s$/, '');
+          return e.target.value = value.replace(/\d\s\/\s$/, '');
         });
       }
     };
     reFormatCVC = function(e) {
-      return setTimeout(function() {
-        var cursor, target;
-        target = e.target || e.srcElement;
-        cursor = target.selectionStart;
-        target.value = target.value.replace(/\D/g, '').slice(0, 4);
-        if (cursor != null) {
-          return target.setSelectionRange(cursor, cursor);
-        }
-      });
+      var cursor;
+      cursor = _getCaretPos(e.target);
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+      if ((cursor != null) && e.type !== 'change') {
+        return e.target.setSelectionRange(cursor, cursor);
+      }
     };
     restrictNumeric = function(e) {
       var input;
@@ -328,16 +346,15 @@
       }
     };
     restrictCardNumber = function(e) {
-      var card, digit, target, value;
-      target = e.target || e.srcElement;
+      var card, digit, value;
       digit = String.fromCharCode(e.which);
       if (!/^\d+$/.test(digit)) {
         return;
       }
-      if (hasTextSelected(target)) {
+      if (hasTextSelected(e.target)) {
         return;
       }
-      value = (target.value + digit).replace(/\D/g, '');
+      value = (e.target.value + digit).replace(/\D/g, '');
       card = cardFromNumber(value);
       if (card && value.length > card.length[card.length.length - 1]) {
         return e.preventDefault();
@@ -346,58 +363,59 @@
       }
     };
     restrictExpiry = function(e) {
-      var digit, target, value;
-      target = e.target || e.srcElement;
+      var digit, value;
       digit = String.fromCharCode(e.which);
       if (!/^\d+$/.test(digit)) {
         return;
       }
-      if (hasTextSelected(target)) {
+      if (hasTextSelected(e.target)) {
         return;
       }
-      value = target.value + digit;
+      value = e.target.value + digit;
       value = value.replace(/\D/g, '');
       if (value.length > 6) {
         return e.preventDefault();
       }
     };
     restrictCVC = function(e) {
-      var digit, target, val;
-      target = e.target || e.srcElement;
+      var digit, val;
       digit = String.fromCharCode(e.which);
-      if (hasTextSelected(target)) {
+      if (!/^\d+$/.test(digit)) {
         return;
       }
-      val = target.value + digit;
+      if (hasTextSelected(e.target)) {
+        return;
+      }
+      val = e.target.value + digit;
       if (val.length > 4) {
         return e.preventDefault();
       }
     };
     payform.cvcInput = function(input) {
-      input.addEventListener('keypress', restrictNumeric);
-      input.addEventListener('keypress', restrictCVC);
-      input.addEventListener('paste', reFormatCVC);
-      input.addEventListener('change', reFormatCVC);
-      return input.addEventListener('input', reFormatCVC);
+      _on(input, 'keypress', restrictNumeric);
+      _on(input, 'keypress', restrictCVC);
+      _on(input, 'paste', reFormatCVC);
+      _on(input, 'change', reFormatCVC);
+      return _on(input, 'input', reFormatCVC);
     };
     payform.expiryInput = function(input) {
-      input.addEventListener('keypress', restrictNumeric);
-      input.addEventListener('keypress', restrictExpiry);
-      input.addEventListener('keypress', formatCardExpiry);
-      input.addEventListener('keypress', formatForwardSlashAndSpace);
-      input.addEventListener('keypress', formatForwardExpiry);
-      input.addEventListener('keydown', formatBackExpiry);
-      input.addEventListener('change', reFormatExpiry);
-      return input.addEventListener('input', reFormatExpiry);
+      _on(input, 'keypress', restrictNumeric);
+      _on(input, 'keypress', restrictExpiry);
+      _on(input, 'keypress', formatCardExpiry);
+      _on(input, 'keypress', formatForwardSlashAndSpace);
+      _on(input, 'keypress', formatForwardExpiry);
+      _on(input, 'keydown', formatBackExpiry);
+      _on(input, 'change', reFormatExpiry);
+      return _on(input, 'input', reFormatExpiry);
     };
     payform.cardNumberInput = function(input) {
-      input.addEventListener('keypress', restrictNumeric);
-      input.addEventListener('keypress', restrictCardNumber);
-      input.addEventListener('keypress', formatCardNumber);
-      input.addEventListener('keydown', formatBackCardNumber);
-      input.addEventListener('paste', reFormatCardNumber);
-      input.addEventListener('change', reFormatCardNumber);
-      return input.addEventListener('input', reFormatCardNumber);
+      _on(input, 'keypress', restrictNumeric);
+      _on(input, 'keypress', restrictCardNumber);
+      _on(input, 'keypress', formatCardNumber);
+      _on(input, 'keydown', formatBackCardNumber);
+      _on(input, 'paste', reFormatCardNumber);
+      _on(input, 'change', reFormatCardNumber);
+      return _on(input, 'input', reFormatCardNumber);
     };
     payform.parseCardExpiry = function(value) {
       var month, prefix, year, _ref;
@@ -512,10 +530,14 @@
       mon = parts[1] || '';
       sep = parts[2] || '';
       year = parts[3] || '';
-      if (year.length > 0 || (sep.length > 0 && !(/\ \/?\ ?/.test(sep)))) {
+      if (year.length > 0) {
         sep = ' / ';
-      }
-      if (mon.length === 1 && (mon !== '0' && mon !== '1')) {
+      } else if (sep === ' /') {
+        mon = mon.substring(0, 1);
+        sep = '';
+      } else if (mon.length === 2 || sep.length > 0) {
+        sep = ' / ';
+      } else if (mon.length === 1 && (mon !== '0' && mon !== '1')) {
         mon = "0" + mon;
         sep = ' / ';
       }

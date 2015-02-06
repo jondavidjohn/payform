@@ -1,9 +1,5 @@
-Copyright (c) 2015 Jonathan D. Johnson
-
-This library is a fork of the original project `jquery.payment` produced
-and owned by Stripe.
-
-https://github.com/stripe/jquery.payment
+Original work as `jquery.payment` Copyright (c) 2014 Stripe
+Modified work as `payform` Copyright (c) 2015 Jonathan D. Johnson
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

@@ -3,33 +3,11 @@
 [![Build Status](https://travis-ci.org/jondavidjohn/payform.svg?branch=master)](https://travis-ci.org/jondavidjohn/payform)
 ![Dependencies](https://david-dm.org/jondavidjohn/payform.svg)
 
-[![NPM](https://nodei.co/npm/payform.png)](https://npmjs.org/package/payform)
+[![npm](https://nodei.co/npm/payform.png)](https://npmjs.org/package/payform)
 
 A general purpose library for building credit card forms, validating inputs, and formatting numbers.
 
-Available via **NPM** (Node or Browserify) and **Bower**.
-
-For example, you can make a input act like a credit card field (with number formatting and length restriction):
-
-``` javascript
-var input = document.getElementById('ccnum');
-payform.cardNumberInput(input);
-```
-
-Then, when the payment form is submitted, you can validate the card number on the client-side (or server-side):
-
-``` javascript
-var valid = payform.validateCardNumber(input.value);
-
-if (!valid) {
-  alert('Your card is not valid!');
-  return false;
-}
-```
-
-You can find a [demo here](http://jondavidjohn.github.io/payform).
-
-Supported card types are:
+Supported card types:
 
 * Visa
 * MasterCard
@@ -43,11 +21,69 @@ Supported card types are:
 * Forbrugsforeningen
 * Dankort
 
-(Additional card types are supported by extending the [`payform.cards`](#payformcards) array.)
+(Custom card types are also [supported](#custom-cards))
+
+Works in IE8+ and all other modern browsers.
+
+[**Demo**](http://jondavidjohn.github.io/payform)
+
+## Installation / Usage
+
+### npm (Node and Browserify)
+
+```sh
+npm install payform --save
+```
+
+```javascript
+var payform = require('payform');
+
+// Validate a credit card number
+payform.validateCardNumber('4242 4242 4242 4242'); //=> true
+
+// Get card type from number
+payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
+```
+
+### AMD / Require.js
+
+```javascript
+require.config({
+    paths: { "payform": "path/to/payform" }
+});
+
+require(["payform"], function (payform) {
+  // Validate a credit card number
+  payform.validateCardNumber('4242 4242 4242 4242'); //=> true
+
+  // Get card type from number
+  payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
+});
+```
+
+### Direct script include / Bower
+
+Optionally via bower (or simply via download)
+```sh
+bower install payform --save
+```
+
+```html
+<script src="path/to/payform/dist/payform.js"></script>
+<script>
+  // Validate a credit card number
+  payform.validateCardNumber('4242 4242 4242 4242'); //=> true
+
+  // Get card type from number
+  payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
+</script>
+```
 
 ## API
 
-### payform.validateCardNumber(number)
+### General Formatting and Validation
+
+#### payform.validateCardNumber(number)
 
 Validates a card number:
 
@@ -61,7 +97,7 @@ Example:
 payform.validateCardNumber('4242 4242 4242 4242'); //=> true
 ```
 
-### payform.validateCardExpiry(month, year)
+#### payform.validateCardExpiry(month, year)
 
 Validates a card expiry:
 
@@ -77,7 +113,7 @@ payform.validateCardExpiry('05', '2015'); //=> true
 payform.validateCardExpiry('05', '05'); //=> false
 ```
 
-### payform.validateCardCVC(cvc, type)
+#### payform.validateCardCVC(cvc, type)
 
 Validates a card CVC:
 
@@ -93,7 +129,7 @@ payform.validateCardCVC('1234', 'amex'); //=> true
 payform.validateCardCVC('12344'); //=> false
 ```
 
-### payform.parseCardType(number)
+#### payform.parseCardType(number)
 
 Returns a card type. Either:
 
@@ -115,9 +151,10 @@ Example:
 
 ``` javascript
 payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
+payform.parseCardType('hello world?'); //=> null
 ```
 
-### payform.parseCardExpiry(string)
+#### payform.parseCardExpiry(string)
 
 Parses a credit card expiry in the form of MM/YYYY, returning an object containing the `month` and `year`. Shorthand years, such as `13` are also supported (and converted into the longhand, e.g. `2013`).
 
@@ -128,7 +165,58 @@ payform.parseCardExpiry('05 / 04'); //=> {month: 5, year: 2004}
 
 This function doesn't perform any validation of the month or year; use `payform.validateCardExpiry(month, year)` for that.
 
-### payform.cards
+### Browser `<input>` formatting helpers
+
+These methods are specifically for use in the browser to attach `<input>` formatters.
+
+#### payform.cardNumberInput(input)
+
+Formats card numbers:
+
+* Includes a space between every 4 digits
+* Restricts input to numbers
+* Limits to 16 numbers
+* Supports American Express formatting
+
+Example:
+
+``` javascript
+var input = document.getElementById('ccnum');
+payform.cardNumberInput(input);
+```
+
+#### payform.expiryInput(input)
+
+Formats card expiry:
+
+* Includes a `/` between the month and year
+* Restricts input to numbers
+* Restricts length
+
+Example:
+
+``` javascript
+var input = document.getElementById('expiry');
+payform.expiryInput(input);
+```
+
+#### payform.cvcInput(input)
+
+Formats card CVC:
+
+* Restricts length to 4 numbers
+* Restricts input to numbers
+
+Example:
+
+``` javascript
+var input = document.getElementById('cvc');
+payform.cvcInput(input);
+```
+
+### Custom Cards
+
+#### payform.cards
 
 Array of objects that describe valid card types. Each object should contain the following fields:
 
@@ -152,62 +240,9 @@ Array of objects that describe valid card types. Each object should contain the 
 
 When identifying a card type, the array is traversed in order until the card number matches a `pattern`. For this reason, patterns with higher specificity should appear towards the beginning of the array.
 
-## Browser `<input>` Helpers
+## Development
 
-These methods are specifically for use in the browser to attach `<input>` formatters.
-
-### payform.cardNumberInput(input)
-
-Formats card numbers:
-
-* Includes a space between every 4 digits
-* Restricts input to numbers
-* Limits to 16 numbers
-* Supports American Express formatting
-
-Example:
-
-``` javascript
-var input = document.getElementById('ccnum');
-payform.cardNumberInput(input);
-```
-
-### payform.expiryInput(input)
-
-Formats card expiry:
-
-* Includes a `/` between the month and year
-* Restricts input to numbers
-* Restricts length
-
-Example:
-
-``` javascript
-var input = document.getElementById('ccnum');
-payform.expiryInput(input);
-```
-
-### payform.cvcInput(input)
-
-Formats card CVC:
-
-* Restricts length to 4 numbers
-* Restricts input to numbers
-
-Example:
-
-``` javascript
-var input = document.getElementById('ccnum');
-payform.cvcInput(input);
-```
-
-## Building
-
-Run `npm run build`
-
-## Running tests
-
-Run `npm test`
+Please see [CONTRIBUTING.md](https://github.com/jondavidjohn/payform/blob/develop/CONTRIBUTING.md).
 
 ## Autocomplete recommendations
 
@@ -239,4 +274,4 @@ We recommend you to use `<input type="tel">` which will cause the numeric keyboa
 ## A derived work
 
 This library is derived from a lot of great work done on [`jquery.payment`](https://github.com/stripe/jquery.payment) by the folks at [Stripe](https://stripe.com/).  This aims to
-build upon that work, in a module that can be consumed more easily with node/npm/browserify and without dependencies.
+build upon that work, in a module that can be consumed in more diverse situations.
