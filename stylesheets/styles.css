@@ -226,8 +226,23 @@ input {
   cursor: pointer;
 }
 
-#complete {
-  padding-left:20px;
+.emoji {
+  position: relative;
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  background-size: 20px 20px;
+  background-image: url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f610.png);
+  top: 4px;
+  left: 10px;
+}
+
+.valid {
+  background-image: url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png);
+}
+
+.invalid {
+  background-image: url(https://assets-cdn.github.com/images/icons/emoji/unicode/1f622.png);
 }
 
 @media print, screen and (max-width: 960px) {

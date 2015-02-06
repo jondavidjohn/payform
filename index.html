@@ -30,35 +30,36 @@
       </header>
       <section>
 
-<h2>
-<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example <small><a href="https://github.com/jondavidjohn/payform/blob/gh-pages/javascripts/form.js">(view source)</a></small></h2>
+        <h2><a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example <small><a href="https://github.com/jondavidjohn/payform/blob/gh-pages/javascripts/form.js">(view source)</a></small></h2>
 
-<div>
-  <span class="field">
-    <label for="ccnum">Card Number <small id="ccnum-type"></small></label>
-    <input placeholder="---- ---- ---- ----" type="tel" name="ccnum" value="" id="ccnum">
-  </span>
-</div>
+        <div>
+          <span class="field">
+            <label for="ccnum">Card Number</label>
+            <input placeholder="---- ---- ---- ----" type="tel" size="19" name="ccnum" value="" id="ccnum">
+          </span>
+          <div><small>type: <strong id="ccnum-type">invalid</strong></small></div>
+        </div>
 
-<div class="">
-  <span class="field">
-    <label for="expiry">Expiration</label>
-    <input placeholder="-- / --" size="7" type="tel" name="expiry" value="" id="expiry">
-  </span>
+        <div>
+          <span class="field">
+            <label for="expiry">Expiration</label>
+            <input placeholder="-- / --" size="7" type="tel" name="expiry" value="" id="expiry">
+          </span>
 
-  <span class="cvc field">
-    <label for="cvc">CVC</label>
-    <input placeholder="---"  size="4" type="tel" name="cvc" value="" id="cvc">
-  </span>
-</div>
+          <span class="cvc field">
+            <label for="cvc">CVC</label>
+            <input placeholder="---"  size="4" type="tel" name="cvc" value="" id="cvc">
+          </span>
+        </div>
 
+        <div>
+          <button id="submit">Submit</button>
+          <div id="result" class="emoji"></div>
+        </div>
 
-<button id="submit">Submit</button> <span id="complete"></span>
-
-<div>
-  <a href="https://github.com/jondavidjohn/payform#api">View the API Documentation Here</a>
-</div>
-
+        <div>
+          <a href="https://github.com/jondavidjohn/payform#api">View the API Documentation Here</a>
+        </div>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/jondavidjohn">jondavidjohn</a></p>

@@ -1,57 +1,55 @@
-var ccnum  = document.getElementById('ccnum'),
-    type   = document.getElementById('ccnum-type'),
-    expiry = document.getElementById('expiry'),
-    cvc    = document.getElementById('cvc'),
-    submit = document.getElementById('submit'),
-    comp   = document.getElementById('complete');
+(function() {
+  var ccnum  = document.getElementById('ccnum'),
+      type   = document.getElementById('ccnum-type'),
+      expiry = document.getElementById('expiry'),
+      cvc    = document.getElementById('cvc'),
+      submit = document.getElementById('submit'),
+      result = document.getElementById('result');
 
-payform.cardNumberInput(ccnum);
-payform.expiryInput(expiry);
-payform.cvcInput(cvc);
+  payform.cardNumberInput(ccnum);
+  payform.expiryInput(expiry);
+  payform.cvcInput(cvc);
 
-submit.addEventListener('click', function() {
-  var valid  = true,
-      expiryVal;
+  ccnum.addEventListener('keydown', updateType);
+  ccnum.addEventListener('paste',   updateType);
+  ccnum.addEventListener('input',   updateType);
+  ccnum.addEventListener('change',  updateType);
 
-  if (!payform.validateCardNumber(ccnum.value)) {
-    valid = false;
-    type.value = '';
-    addClass(ccnum.parentNode, 'error');
-  } else {
-    type.innerHTML = payform.parseCardType(ccnum.value);
-    removeClass(ccnum.parentNode, 'error');
+  submit.addEventListener('click', function() {
+    var valid     = [],
+        expiryObj = payform.parseCardExpiry(expiry.value);
+
+    valid.push(fieldStatus(ccnum,  payform.validateCardNumber(ccnum.value)));
+    valid.push(fieldStatus(expiry, payform.validateCardExpiry(expiryObj)));
+    valid.push(fieldStatus(cvc,    payform.validateCardCVC(cvc.value, type.innerHTML)));
+
+    result.className = 'emoji ' + (valid.every(Boolean) ? 'valid' : 'invalid');
+  });
+
+  function updateType(e) {
+    var cardType = payform.parseCardType(e.target.value);
+    type.innerHTML = cardType || 'invalid';
   }
 
-  expiryVal = payform.parseCardExpiry(expiry.value);
-  if (!payform.validateCardExpiry(expiryVal.month, expiryVal.year)) {
-    valid = false;
-    addClass(expiry.parentNode, 'error');
-  } else {
-    removeClass(expiry.parentNode, 'error');
+
+  function fieldStatus(input, valid) {
+    if (valid) {
+      removeClass(input.parentNode, 'error');
+    } else {
+      addClass(input.parentNode, 'error');
+    }
+    return valid;
   }
 
-  if (!payform.validateCardCVC(cvc.value, type.innerHTML)) {
-    valid = false;
-    addClass(cvc.parentNode, 'error');
-  } else {
-    removeClass(cvc.parentNode, 'error');
+  function addClass(ele, _class) {
+    if (ele.className.indexOf(_class) === -1) {
+      ele.className += ' ' + _class;
+    }
   }
 
-  if (valid) {
-    comp.innerHTML = ' Yay!';
-  } else {
-    comp.innerHTML = ' :((((';
+  function removeClass(ele, _class) {
+    if (ele.className.indexOf(_class) !== -1) {
+      ele.className = ele.className.replace(_class, '');
+    }
   }
-});
-
-function addClass(ele, _class) {
-  if (ele.className.indexOf(_class) === -1) {
-    ele.className += ' ' + _class;
-  }
-}
-
-function removeClass(ele, _class) {
-  if (ele.className.indexOf(_class) !== -1) {
-    ele.className = ele.className.replace(_class, '');
-  }
-}
+})();
