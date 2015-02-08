@@ -13,8 +13,6 @@ do ($ = jQuery) ->
     formatNumeric: ->
       payform.numericInput @get(0)
 
-  $.fn.payform = ->
-    args   = [].slice.call(arguments)
-    method = args.shift()
-    $.payform.fn[method].apply(this, args)
+  $.fn.payform = (method) ->
+    $.payform.fn[method].call(this) if $.payform.fn[method]?
     return this

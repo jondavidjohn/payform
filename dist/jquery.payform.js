@@ -19,11 +19,10 @@ payform = require('./payform');
       return payform.numericInput(this.get(0));
     }
   };
-  return $.fn.payform = function() {
-    var args, method;
-    args = [].slice.call(arguments);
-    method = args.shift();
-    $.payform.fn[method].apply(this, args);
+  return $.fn.payform = function(method) {
+    if ($.payform.fn[method] != null) {
+      $.payform.fn[method].call(this);
+    }
     return this;
   };
 })(jQuery);
