@@ -1,6 +1,9 @@
 bower.json
 .npmignore
 CONTRIBUTING.md
+Makefile
+index.html
+jquery.html
 .travis.yml
 test/*
 src/*
