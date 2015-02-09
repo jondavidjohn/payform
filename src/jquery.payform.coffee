@@ -1,6 +1,6 @@
 payform = require './payform'
 
-do ($ = jQuery) ->
+do ($ = window.jQuery || window.Zepto) ->
 
   $.payform = payform
   $.payform.fn =

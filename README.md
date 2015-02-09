@@ -91,7 +91,7 @@ bower install payform --save
 </script>
 ```
 
-### jQuery Plugin
+### jQuery Plugin (also supports Zepto)
 
 This library also includes a jquery plugin.  The primary `payform` object
 can be found at `$.payform`, and there are jquery centric ways to utilize the [browser
