@@ -1,0 +1,31 @@
+{
+  "name": "payform",
+  "version": "1.0.2",
+  "title": "payform",
+  "description": "A general purpose library for building credit card forms, validating inputs, and formatting numbers.",
+  "keywords": [
+    "payment",
+    "form",
+    "cc",
+    "card",
+    "credit card",
+    "formatting",
+    "validation"
+  ],
+  "author": {
+    "name": "Jonathan D. Johnson",
+    "url": "http://jondavidjohn.com",
+    "email": "me@jondavidjohn.com"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "https://github.com/jondavidjohn/payform/blob/master/LICENSE"
+  }],
+  "homepage": "http://jondavidjohn.github.io/payform/",
+  "docs": "https://github.com/jondavidjohn/payform",
+  "bugs": "https://github.com/jondavidjohn/payform/issues",
+  "demo": "http://jondavidjohn.github.io/payform/",
+  "dependencies": {
+    "jquery": ">=1.5"
+  }
+}
