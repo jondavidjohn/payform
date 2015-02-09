@@ -11,10 +11,10 @@ dist/payform.min.js: dist/payform.js
 
 dist/jquery.payform.js: src/jquery.payform.coffee
 	$(BIN)browserify             \
-		-p bundle-collapser/plugin \
-		-t coffeeify               \
-		--extension='.coffee'      \
-		src/jquery.payform.coffee > dist/jquery.payform.js
+	  -p bundle-collapser/plugin \
+	  -t coffeeify               \
+	  --extension='.coffee'      \
+	  src/jquery.payform.coffee > dist/jquery.payform.js
 
 dist/jquery.payform.min.js: dist/jquery.payform.js
 	$(BIN)uglify -s dist/jquery.payform.js -o dist/jquery.payform.min.js
