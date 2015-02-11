@@ -1,3 +1,8 @@
+= 1.1.0
+  * Add jQuery Plugin shim
+  * Add numeric input formatter `numericInput`
+  * Move build process to makefile
+
 = 1.0.2
   * Fix bug with 1 or 0 in expiry formatting
   * Fix strange behavior with cursor position on 'change' events

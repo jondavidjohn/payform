@@ -4,7 +4,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.0.2
+  Version: 1.1.0
 ###
 ((name, definition) ->
   if module?
@@ -373,6 +373,12 @@
     _on(input, 'paste',    reFormatCardNumber)
     _on(input, 'change',   reFormatCardNumber)
     _on(input, 'input',    reFormatCardNumber)
+
+  payform.numericInput = (input) ->
+    _on(input, 'keypress', restrictNumeric)
+    _on(input, 'paste',    restrictNumeric)
+    _on(input, 'change',   restrictNumeric)
+    _on(input, 'input',    restrictNumeric)
 
   # Validations
 

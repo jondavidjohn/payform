@@ -5,7 +5,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.0.2
+  Version: 1.1.0
  */
 
 (function() {
@@ -416,6 +416,12 @@
       _on(input, 'paste', reFormatCardNumber);
       _on(input, 'change', reFormatCardNumber);
       return _on(input, 'input', reFormatCardNumber);
+    };
+    payform.numericInput = function(input) {
+      _on(input, 'keypress', restrictNumeric);
+      _on(input, 'paste', restrictNumeric);
+      _on(input, 'change', restrictNumeric);
+      return _on(input, 'input', restrictNumeric);
     };
     payform.parseCardExpiry = function(value) {
       var month, prefix, year, _ref;

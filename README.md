@@ -38,6 +38,10 @@ npm install payform --save
 ```javascript
 var payform = require('payform');
 
+// Format input for card number entry
+var input = document.getElementById('ccnum');
+payform.cardNumberInput(input)
+
 // Validate a credit card number
 payform.validateCardNumber('4242 4242 4242 4242'); //=> true
 
@@ -53,6 +57,10 @@ require.config({
 });
 
 require(["payform"], function (payform) {
+  // Format input for card number entry
+  var input = document.getElementById('ccnum');
+  payform.cardNumberInput(input)
+
   // Validate a credit card number
   payform.validateCardNumber('4242 4242 4242 4242'); //=> true
 
@@ -71,11 +79,35 @@ bower install payform --save
 ```html
 <script src="path/to/payform/dist/payform.js"></script>
 <script>
+  // Format input for card number entry
+  var input = document.getElementById('ccnum');
+  payform.cardNumberInput(input)
+
   // Validate a credit card number
   payform.validateCardNumber('4242 4242 4242 4242'); //=> true
 
   // Get card type from number
   payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
+</script>
+```
+
+### jQuery Plugin (also supports Zepto)
+
+This library also includes a jquery plugin.  The primary `payform` object
+can be found at `$.payform`, and there are jquery centric ways to utilize the [browser
+input formatters.](#browser-input-formatting-helpers)
+
+```html
+<script src="path/to/payform/dist/jquery.payform.js"></script>
+<script>
+  // Format input for card number entry
+  $('input.ccnum').payform('formatCardNumber');
+
+  // Validate a credit card number
+  $.payform.validateCardNumber('4242 4242 4242 4242'); //=> true
+
+  // Get card type from number
+  $.payform.parseCardType('4242 4242 4242 4242'); //=> 'visa'
 </script>
 ```
 
@@ -169,7 +201,11 @@ This function doesn't perform any validation of the month or year; use `payform.
 
 These methods are specifically for use in the browser to attach `<input>` formatters.
 
+(alternate [jQuery Plugin](#jquery-plugin) syntax is also provided)
+
 #### payform.cardNumberInput(input)
+
+_jQuery plugin:_ `$(...).payform('formatCardNumber')`
 
 Formats card numbers:
 
@@ -187,6 +223,8 @@ payform.cardNumberInput(input);
 
 #### payform.expiryInput(input)
 
+_jQuery plugin:_ `$(...).payform('formatCardExpiry')`
+
 Formats card expiry:
 
 * Includes a `/` between the month and year
@@ -202,6 +240,8 @@ payform.expiryInput(input);
 
 #### payform.cvcInput(input)
 
+_jQuery plugin:_ `$(...).payform('formatCardCVC')`
+
 Formats card CVC:
 
 * Restricts length to 4 numbers
@@ -212,6 +252,19 @@ Example:
 ``` javascript
 var input = document.getElementById('cvc');
 payform.cvcInput(input);
+```
+
+#### payform.numericInput(input)
+
+_jQuery plugin:_ `$(...).payform('formatNumeric')`
+
+General numeric input restriction.
+
+Example:
+
+``` javascript
+var input = document.getElementById('numeric');
+payform.numericInput(input);
 ```
 
 ### Custom Cards
