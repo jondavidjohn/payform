@@ -417,6 +417,12 @@
       _on(input, 'change', reFormatCardNumber);
       return _on(input, 'input', reFormatCardNumber);
     };
+    payform.numericInput = function(input) {
+      _on(input, 'keypress', restrictNumeric);
+      _on(input, 'paste', restrictNumeric);
+      _on(input, 'change', restrictNumeric);
+      return _on(input, 'input', restrictNumeric);
+    };
     payform.parseCardExpiry = function(value) {
       var month, prefix, year, _ref;
       value = value.replace(/\s/g, '');

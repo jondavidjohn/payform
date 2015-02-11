@@ -374,6 +374,12 @@
     _on(input, 'change',   reFormatCardNumber)
     _on(input, 'input',    reFormatCardNumber)
 
+  payform.numericInput = (input) ->
+    _on(input, 'keypress', restrictNumeric)
+    _on(input, 'paste',    restrictNumeric)
+    _on(input, 'change',   restrictNumeric)
+    _on(input, 'input',    restrictNumeric)
+
   # Validations
 
   payform.parseCardExpiry = (value) ->

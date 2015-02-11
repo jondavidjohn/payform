@@ -25,12 +25,13 @@
     <input type="text" name="numeric" id="numeric">
   </div>
 
-  <script src="dist/payform.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="dist/jquery.payform.js" type="text/javascript" charset="utf-8"></script>
   <script type="text/javascript" charset="utf-8">
-    payform.cardNumberInput(document.getElementById('ccnum'));
-    payform.expiryInput(document.getElementById('expiry'));
-    payform.cvcInput(document.getElementById('cvc'));
-    payform.numericInput(document.getElementById('numeric'));
+    $('#ccnum').payform('formatCardNumber');
+    $('#expiry').payform('formatCardExpiry');
+    $('#cvc').payform('formatCardCVC');
+    $('#numeric').payform('formatNumeric');
   </script>
 </body>
 </html>
