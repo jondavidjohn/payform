@@ -9,7 +9,10 @@
     "card",
     "credit card",
     "formatting",
-    "validation"
+    "validation",
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "ecosystem:browserify"
   ],
   "author": "Jonathan D. Johnson <me@jondavidjohn.com>",
   "license": "MIT",
