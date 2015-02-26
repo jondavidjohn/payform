@@ -1,3 +1,6 @@
+= unreleased
+  * Updated Diners Club Pattern
+
 = 1.1.0
   * Add jQuery Plugin shim
   * Add numeric input formatter `numericInput`
