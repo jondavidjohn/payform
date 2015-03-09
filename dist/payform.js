@@ -5,11 +5,11 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.1.0
+  Version: 1.1.1
  */
 
 (function() {
-  var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+  var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   (function(name, definition) {
     if (typeof module !== "undefined" && module !== null) {
@@ -20,7 +20,7 @@
       return this[name] = definition();
     }
   })('payform', function() {
-    var cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric, _eventNormalize, _getCaretPos, _on;
+    var _eventNormalize, _getCaretPos, _on, cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
     _getCaretPos = function(ele) {
       var r, rc, re;
       if (ele.selectionStart != null) {
@@ -141,33 +141,33 @@
       }
     ];
     cardFromNumber = function(num) {
-      var card, _i, _len, _ref;
+      var card, i, len, ref;
       num = (num + '').replace(/\D/g, '');
-      _ref = payform.cards;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        card = _ref[_i];
+      ref = payform.cards;
+      for (i = 0, len = ref.length; i < len; i++) {
+        card = ref[i];
         if (card.pattern.test(num)) {
           return card;
         }
       }
     };
     cardFromType = function(type) {
-      var card, _i, _len, _ref;
-      _ref = payform.cards;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        card = _ref[_i];
+      var card, i, len, ref;
+      ref = payform.cards;
+      for (i = 0, len = ref.length; i < len; i++) {
+        card = ref[i];
         if (card.type === type) {
           return card;
         }
       }
     };
     luhnCheck = function(num) {
-      var digit, digits, odd, sum, _i, _len;
+      var digit, digits, i, len, odd, sum;
       odd = true;
       sum = 0;
       digits = (num + '').split('').reverse();
-      for (_i = 0, _len = digits.length; _i < _len; _i++) {
-        digit = digits[_i];
+      for (i = 0, len = digits.length; i < len; i++) {
+        digit = digits[i];
         digit = parseInt(digit, 10);
         if ((odd = !odd)) {
           digit *= 2;
@@ -180,8 +180,8 @@
       return sum % 10 === 0;
     };
     hasTextSelected = function(target) {
-      var _ref;
-      if ((typeof document !== "undefined" && document !== null ? (_ref = document.selection) != null ? _ref.createRange : void 0 : void 0) != null) {
+      var ref;
+      if ((typeof document !== "undefined" && document !== null ? (ref = document.selection) != null ? ref.createRange : void 0 : void 0) != null) {
         if (document.selection.createRange().text) {
           return true;
         }
@@ -363,7 +363,7 @@
       }
     };
     restrictExpiry = function(e) {
-      var digit, value;
+      var digit, maxlength, restrictValue, value;
       digit = String.fromCharCode(e.which);
       if (!/^\d+$/.test(digit)) {
         return;
@@ -373,7 +373,9 @@
       }
       value = e.target.value + digit;
       value = value.replace(/\D/g, '');
-      if (value.length > 6) {
+      maxlength = e.target.getAttribute('data-maxlength');
+      restrictValue = typeof maxlength === "number" ? maxlength : 6;
+      if (value.length > restrictValue) {
         return e.preventDefault();
       }
     };
@@ -424,9 +426,9 @@
       return _on(input, 'input', restrictNumeric);
     };
     payform.parseCardExpiry = function(value) {
-      var month, prefix, year, _ref;
+      var month, prefix, ref, year;
       value = value.replace(/\s/g, '');
-      _ref = value.split('/', 2), month = _ref[0], year = _ref[1];
+      ref = value.split('/', 2), month = ref[0], year = ref[1];
       if ((year != null ? year.length : void 0) === 2 && /^\d+$/.test(year)) {
         prefix = (new Date).getFullYear();
         prefix = prefix.toString().slice(0, 2);
@@ -440,7 +442,7 @@
       };
     };
     payform.validateCardNumber = function(num) {
-      var card, _ref;
+      var card, ref;
       num = (num + '').replace(/\s+|-/g, '');
       if (!/^\d+$/.test(num)) {
         return false;
@@ -449,12 +451,12 @@
       if (!card) {
         return false;
       }
-      return (_ref = num.length, __indexOf.call(card.length, _ref) >= 0) && (card.luhn === false || luhnCheck(num));
+      return (ref = num.length, indexOf.call(card.length, ref) >= 0) && (card.luhn === false || luhnCheck(num));
     };
     payform.validateCardExpiry = function(month, year) {
-      var currentTime, expiry, _ref;
+      var currentTime, expiry, ref;
       if (typeof month === 'object' && 'month' in month) {
-        _ref = month, month = _ref.month, year = _ref.year;
+        ref = month, month = ref.month, year = ref.year;
       }
       if (!(month && year)) {
         return false;
@@ -487,27 +489,27 @@
       return expiry > currentTime;
     };
     payform.validateCardCVC = function(cvc, type) {
-      var card, _ref;
+      var card, ref;
       cvc = String(cvc).trim();
       if (!/^\d+$/.test(cvc)) {
         return false;
       }
       card = cardFromType(type);
       if (card != null) {
-        return _ref = cvc.length, __indexOf.call(card.cvcLength, _ref) >= 0;
+        return ref = cvc.length, indexOf.call(card.cvcLength, ref) >= 0;
       } else {
         return cvc.length >= 3 && cvc.length <= 4;
       }
     };
     payform.parseCardType = function(num) {
-      var _ref;
+      var ref;
       if (!num) {
         return null;
       }
-      return ((_ref = cardFromNumber(num)) != null ? _ref.type : void 0) || null;
+      return ((ref = cardFromNumber(num)) != null ? ref.type : void 0) || null;
     };
     payform.formatCardNumber = function(num) {
-      var card, groups, upperLength, _ref;
+      var card, groups, ref, upperLength;
       num = num.replace(/\D/g, '');
       card = cardFromNumber(num);
       if (!card) {
@@ -516,7 +518,7 @@
       upperLength = card.length[card.length.length - 1];
       num = num.slice(0, upperLength);
       if (card.format.global) {
-        return (_ref = num.match(card.format)) != null ? _ref.join(' ') : void 0;
+        return (ref = num.match(card.format)) != null ? ref.join(' ') : void 0;
       } else {
         groups = card.format.exec(num);
         if (groups == null) {
