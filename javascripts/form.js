@@ -10,10 +10,7 @@
   payform.expiryInput(expiry);
   payform.cvcInput(cvc);
 
-  ccnum.addEventListener('keydown', updateType);
-  ccnum.addEventListener('paste',   updateType);
   ccnum.addEventListener('input',   updateType);
-  ccnum.addEventListener('change',  updateType);
 
   submit.addEventListener('click', function() {
     var valid     = [],
