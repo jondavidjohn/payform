@@ -25,7 +25,7 @@ Supported card types:
 
 Works in IE8+ and all other modern browsers.
 
-[**Demo**](http://jondavidjohn.github.io/payform)
+[**Demo**](https://jondavidjohn.github.io/payform)
 
 ## Installation / Usage
 
