@@ -1,32 +1,39 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta charset="utf-8">
   <title>Payform Demo</title>
 </head>
 <body>
 
   <div>
     <label for="ccnum">Number</label>
-    <input type="text" name="ccnum" id="ccnum">
+    <input type="text" name="ccnum" id="ccnum" inputmode="numeric" autocomplete="cc-number">
   </div>
 
-  <div>
-    <label for="expiry">Expiry</label>
-    <input type="text" name="expiry" id="expiry">
-  </div>
+
+  <!--
+    TODO: use one input autocomplete=cc-exp input (e.g. 2015-12)
+    or two separate inputs, cc-exp-year & cc-exp-month
+    https://html.spec.whatwg.org/multipage/forms.html#attr-fe-autocomplete-cc-exp
+  -->
+   <div>
+     <label for="expiry">Expiry</label>
+    <input type="text" name="expiry" id="expiry" inputmode="numeric">
+   </div>
 
   <div>
     <label for="cvc">CVC</label>
-    <input type="text" name="cvc" id="cvc">
+    <input type="text" name="cvc" id="cvc" inputmode="numeric" autocomplete="cc-csc">
   </div>
 
   <div>
     <label for="numeric">Numeric</label>
-    <input type="text" name="numeric" id="numeric">
+    <input type="text" name="numeric" id="numeric" inputmode="numeric" autocomplete="cc-number">
   </div>
 
-  <script src="dist/payform.js" type="text/javascript" charset="utf-8"></script>
-  <script type="text/javascript" charset="utf-8">
+  <script src="dist/payform.js" charset="utf-8"></script>
+  <script>
     payform.cardNumberInput(document.getElementById('ccnum'));
     payform.expiryInput(document.getElementById('expiry'));
     payform.cvcInput(document.getElementById('cvc'));
