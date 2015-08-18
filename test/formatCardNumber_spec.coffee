@@ -8,5 +8,10 @@ describe 'payform', ->
       assert payform.formatCardNumber('42424242'), '4242 4242'
       assert payform.formatCardNumber('4242424242'), '4242 4242 42'
       assert payform.formatCardNumber('4242424242424242'), '4242 4242 4242 4242'
+
     it 'should format amex cc number correctly', ->
       assert payform.formatCardNumber('37828'), '3782 8'
+
+    it 'should format full-width cc number correctly',  ->
+      assert payform.formatCardNumber('\uff14\uff12\uff14\uff12'), '4242'
+      assert payform.formatCardNumber('\uff14\uff12\uff14\uff12\uff14\uff12'), '4242 42'
