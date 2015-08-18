@@ -1,5 +1,7 @@
-= unreleased
+= 1.2.0
   * Updated Diners Club Pattern
+  * New Mastercard Ranges
+  * Support for full width input modes
 
 = 1.1.0
   * Add jQuery Plugin shim
