@@ -11,6 +11,10 @@ describe 'payform', ->
       topic = payform.parseCardType '5555555555554444'
       assert.equal topic, 'mastercard'
 
+    it 'that begins with 2 should return MasterCard', ->
+      topic = payform.parseCardType '2221000002222221'
+      assert.equal topic, 'mastercard'
+
     it 'that begins with 34 should return American Express', ->
       topic = payform.parseCardType '3412121212121212'
       assert.equal topic, 'amex'
@@ -40,6 +44,7 @@ describe 'payform', ->
 
       assert.equal(payform.parseCardType('5555555555554444'), 'mastercard')
       assert.equal(payform.parseCardType('5454545454545454'), 'mastercard')
+      assert.equal(payform.parseCardType('2221000002222221'), 'mastercard')
 
       assert.equal(payform.parseCardType('378282246310005'), 'amex')
       assert.equal(payform.parseCardType('371449635398431'), 'amex')

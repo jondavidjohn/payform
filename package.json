@@ -1,6 +1,6 @@
 {
   "name": "payform",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A general purpose library for building credit card forms, validating inputs, and formatting numbers.",
   "keywords": [
     "payment",
@@ -9,7 +9,10 @@
     "card",
     "credit card",
     "formatting",
-    "validation"
+    "validation",
+    "jquery-plugin",
+    "ecosystem:jquery",
+    "ecosystem:browserify"
   ],
   "author": "Jonathan D. Johnson <me@jondavidjohn.com>",
   "license": "MIT",

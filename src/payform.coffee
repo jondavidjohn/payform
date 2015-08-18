@@ -94,7 +94,7 @@
     }
     {
       type: 'mastercard'
-      pattern: /^5[0-5]/
+      pattern: /^(5[1-5]|2[2-7])/
       format: defaultFormat
       length: [16]
       cvcLength: [3]
@@ -111,7 +111,7 @@
     {
       type: 'dinersclub'
       pattern: /^3[0689]/
-      format: defaultFormat
+      format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/
       length: [14]
       cvcLength: [3]
       luhn: true
@@ -170,6 +170,22 @@
     target.selectionStart? and target.selectionStart isnt target.selectionEnd
 
   # Private
+
+  # Replace Full-Width Chars
+
+  replaceFullWidthChars = (str = '') ->
+    fullWidth = '\uff10\uff11\uff12\uff13\uff14\uff15\uff16\uff17\uff18\uff19'
+    halfWidth = '0123456789'
+
+    value = ''
+    chars = str.split('')
+
+    for char in chars
+      idx = fullWidth.indexOf(char)
+      char = halfWidth[idx] if idx > -1
+      value += char
+
+    value
 
   # Format Card Number
 
@@ -287,7 +303,7 @@
 
   reFormatCVC = (e) ->
     cursor = _getCaretPos(e.target)
-    e.target.value = e.target.value.replace(/\D/g, '')[0...4]
+    e.target.value = replaceFullWidthChars(e.target.value).replace(/\D/g, '')[0...4]
     if cursor? and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
 
@@ -459,6 +475,7 @@
     cardFromNumber(num)?.type or null
 
   payform.formatCardNumber = (num) ->
+    num = replaceFullWidthChars(num)
     num = num.replace(/\D/g, '')
     card = cardFromNumber(num)
     return num unless card
@@ -476,6 +493,7 @@
       groups.join(' ')
 
   payform.formatCardExpiry = (expiry) ->
+    expiry = replaceFullWidthChars(expiry)
     parts = expiry.match(/^\D*(\d{1,2})(\D+)?(\d{1,4})?/)
     return '' unless parts
 
