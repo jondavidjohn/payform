@@ -238,7 +238,7 @@ var input = document.getElementById('expiry');
 payform.expiryInput(input);
 ```
 
-Pass through _true_ as optional an argument to restrict dates to 4 numbers, ex. **04/16**
+Pass through _true_ as an optional argument to restrict dates to 4 numbers, ex. **04/16**
 
 _jQuery plugin:_ `$(...).payform('formatCardExpiry', true)`
 
