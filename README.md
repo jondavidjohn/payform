@@ -229,7 +229,7 @@ Formats card expiry:
 
 * Includes a `/` between the month and year
 * Restricts input to numbers
-* Restricts length to 6 numbers, ex. 04/2016
+* Restricts length to 6 numbers, ex. **04/2016**
 
 Example:
 
@@ -238,13 +238,13 @@ var input = document.getElementById('expiry');
 payform.expiryInput(input);
 ```
 
-Pass through _true as optional argument to restrict dates to 4 numbers, ex. 04/16
+Pass through _true_ as optional argument to restrict dates to 4 numbers, ex. **04/16**
 
 Example:
 
 ``` javascript
 var input = document.getElementById('expiry');
-payform.expiryInput(input);
+payform.expiryInput(input, true);
 ```
 
 #### payform.cvcInput(input)
