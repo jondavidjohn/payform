@@ -22,6 +22,11 @@
     <input type="text" name="expiry" id="expiry" inputmode="numeric">
    </div>
 
+   <div>
+     <label for="expiry">Expiry Short</label>
+    <input type="text" name="expiry_short" id="expiry-short" inputmode="numeric">
+   </div>
+
   <div>
     <label for="cvc">CVC</label>
     <input type="text" name="cvc" id="cvc" inputmode="numeric" autocomplete="cc-csc">
@@ -36,6 +41,7 @@
   <script>
     payform.cardNumberInput(document.getElementById('ccnum'));
     payform.expiryInput(document.getElementById('expiry'));
+    payform.expiryInput(document.getElementById('expiry-short'), true);
     payform.cvcInput(document.getElementById('cvc'));
     payform.numericInput(document.getElementById('numeric'));
   </script>

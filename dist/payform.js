@@ -381,7 +381,7 @@
         return e.preventDefault();
       }
     };
-    restrictExpiry = function(e) {
+    restrictExpiry = function(short, e) {
       var digit, value;
       digit = String.fromCharCode(e.which);
       if (!/^\d+$/.test(digit)) {
@@ -392,7 +392,7 @@
       }
       value = e.target.value + digit;
       value = value.replace(/\D/g, '');
-      if (value.length > 6) {
+      if (value.length > (short ? 4 : 6)) {
         return e.preventDefault();
       }
     };
@@ -417,9 +417,12 @@
       _on(input, 'change', reFormatCVC);
       return _on(input, 'input', reFormatCVC);
     };
-    payform.expiryInput = function(input) {
+    payform.expiryInput = function(input, short) {
+      if (short == null) {
+        short = false;
+      }
       _on(input, 'keypress', restrictNumeric);
-      _on(input, 'keypress', restrictExpiry);
+      _on(input, 'keypress', restrictExpiry.bind(this, short));
       _on(input, 'keypress', formatCardExpiry);
       _on(input, 'keypress', formatForwardSlashAndSpace);
       _on(input, 'keypress', formatForwardExpiry);

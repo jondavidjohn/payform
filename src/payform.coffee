@@ -340,7 +340,7 @@
     else if value.length > 16
       e.preventDefault()
 
-  restrictExpiry = (e) ->
+  restrictExpiry = (short, e) ->
     digit  = String.fromCharCode(e.which)
     return unless /^\d+$/.test(digit)
 
@@ -349,7 +349,7 @@
     value = e.target.value + digit
     value = value.replace(/\D/g, '')
 
-    if value.length > 6
+    if value.length > (if short then 4 else 6)
       e.preventDefault()
 
   restrictCVC = (e) ->
@@ -371,9 +371,9 @@
     _on(input, 'change',   reFormatCVC)
     _on(input, 'input',    reFormatCVC)
 
-  payform.expiryInput = (input) ->
+  payform.expiryInput = (input, short=false) ->
     _on(input, 'keypress', restrictNumeric)
-    _on(input, 'keypress', restrictExpiry)
+    _on(input, 'keypress', restrictExpiry.bind(this,short))
     _on(input, 'keypress', formatCardExpiry)
     _on(input, 'keypress', formatForwardSlashAndSpace)
     _on(input, 'keypress', formatForwardExpiry)
