@@ -1,6 +1,5 @@
-= dev
+= 1.2.1
   * Correct Diners Club Pattern (regarding #19 and #22)
-  *
 
 = 1.2.0
   * Updated Diners Club Pattern
