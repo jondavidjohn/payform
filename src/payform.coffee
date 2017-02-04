@@ -111,7 +111,7 @@
     {
       type: 'dinersclub'
       pattern: /^3[0689]/
-      format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/
+      format: /(\d{1,4})(\d{1,4})?(\d{1,4})?(\d{1,2})?/
       length: [14]
       cvcLength: [3]
       luhn: true
