@@ -5,7 +5,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.1.0
+  Version: 1.2.1
  */
 
 (function() {
@@ -113,7 +113,7 @@
       }, {
         type: 'dinersclub',
         pattern: /^3[0689]/,
-        format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/,
+        format: /(\d{1,4})(\d{1,4})?(\d{1,4})?(\d{1,2})?/,
         length: [14],
         cvcLength: [3],
         luhn: true
