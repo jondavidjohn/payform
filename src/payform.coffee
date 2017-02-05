@@ -348,8 +348,10 @@
 
     value = e.target.value + digit
     value = value.replace(/\D/g, '')
+    maxlength = parseInt(e.target.getAttribute('data-maxlength'), 10)
+    restrictValue = if typeof maxlength == "number" and !isNaN(maxlength) then maxlength else 6
 
-    if value.length > 6
+    if value.length > restrictValue
       e.preventDefault()
 
   restrictCVC = (e) ->
