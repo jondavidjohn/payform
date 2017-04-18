@@ -5,5 +5,6 @@ Makefile
 index.html
 jquery.html
 .travis.yml
+.lvimrc
 test/*
 src/*
