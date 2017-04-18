@@ -21,7 +21,7 @@
     }
   })('payform', function() {
     var _eventNormalize, _getCaretPos, _on, cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, isAndroid, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric, setSelectionRange;
-    isAndroid = /Android/i.test(navigator && navigator.userAgent);
+    isAndroid = /Android/i.test(typeof navigator !== 'undefined' && navigator.userAgent);
     _getCaretPos = function(ele) {
       var r, rc, re;
       if (ele.selectionStart != null) {

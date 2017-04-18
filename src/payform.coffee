@@ -15,7 +15,7 @@
     this[name] = definition()
 )('payform', ->
 
-  isAndroid = /Android/i.test(navigator && navigator.userAgent)
+  isAndroid = /Android/i.test(typeof navigator != 'undefined' && navigator.userAgent)
 
   _getCaretPos = (ele) ->
     if ele.selectionStart?
