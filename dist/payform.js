@@ -20,7 +20,8 @@
       return this[name] = definition();
     }
   })('payform', function() {
-    var _eventNormalize, _getCaretPos, _on, cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
+    var _eventNormalize, _getCaretPos, _on, cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, isAndroid, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric, setSelectionRange;
+    isAndroid = /Android/i.test(navigator && navigator.userAgent);
     _getCaretPos = function(ele) {
       var r, rc, re;
       if (ele.selectionStart != null) {
@@ -207,12 +208,22 @@
       }
       return value;
     };
+    setSelectionRange = function(target, cursor) {
+      if (isAndroid) {
+        window.setTimeout((function() {
+          cursor = _getCaretPos(e.target);
+          return e.target.setSelectionRange(cursor, cursor);
+        }), 0);
+        return;
+      }
+      return target.setSelectionRange(cursor, cursor);
+    };
     reFormatCardNumber = function(e) {
       var cursor;
       cursor = _getCaretPos(e.target);
       e.target.value = payform.formatCardNumber(e.target.value);
       if ((cursor != null) && e.type !== 'change') {
-        return e.target.setSelectionRange(cursor, cursor);
+        return setSelectionRange(e.target.cursor);
       }
     };
     formatCardNumber = function(e) {
@@ -279,7 +290,7 @@
       cursor = _getCaretPos(e.target);
       e.target.value = payform.formatCardExpiry(e.target.value);
       if ((cursor != null) && e.type !== 'change') {
-        return e.target.setSelectionRange(cursor, cursor);
+        return setSelectionRange(e.target.cursor);
       }
     };
     formatCardExpiry = function(e) {
@@ -345,7 +356,7 @@
       cursor = _getCaretPos(e.target);
       e.target.value = replaceFullWidthChars(e.target.value).replace(/\D/g, '').slice(0, 4);
       if ((cursor != null) && e.type !== 'change') {
-        return e.target.setSelectionRange(cursor, cursor);
+        return setSelectionRange(e.target.cursor);
       }
     };
     restrictNumeric = function(e) {
