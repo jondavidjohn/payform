@@ -212,8 +212,8 @@
     cursor = _getCaretPos(e.target)
     return if cursor and cursor isnt value.length
 
-    if card && card.type is 'amex'
-      # AMEX cards are formatted differently
+    if card && card.type in ['amex', 'dinersclub']
+      # AMEX and Diner's Club cards are formatted differently
       re = /^(\d{4}|\d{4}\s\d{6})$/
     else
       re = /(?:^|\s)(\d{4})$/
