@@ -211,8 +211,8 @@
     setSelectionRange = function(target, cursor) {
       if (isAndroid) {
         window.setTimeout((function() {
-          cursor = _getCaretPos(e.target);
-          return e.target.setSelectionRange(cursor, cursor);
+          cursor = _getCaretPos(target);
+          return target.setSelectionRange(cursor, cursor);
         }), 0);
         return;
       }
@@ -223,7 +223,7 @@
       cursor = _getCaretPos(e.target);
       e.target.value = payform.formatCardNumber(e.target.value);
       if ((cursor != null) && e.type !== 'change') {
-        return setSelectionRange(e.target.cursor);
+        return setSelectionRange(e.target, cursor);
       }
     };
     formatCardNumber = function(e) {
@@ -290,7 +290,7 @@
       cursor = _getCaretPos(e.target);
       e.target.value = payform.formatCardExpiry(e.target.value);
       if ((cursor != null) && e.type !== 'change') {
-        return setSelectionRange(e.target.cursor);
+        return setSelectionRange(e.target, cursor);
       }
     };
     formatCardExpiry = function(e) {
@@ -356,7 +356,7 @@
       cursor = _getCaretPos(e.target);
       e.target.value = replaceFullWidthChars(e.target.value).replace(/\D/g, '').slice(0, 4);
       if ((cursor != null) && e.type !== 'change') {
-        return setSelectionRange(e.target.cursor);
+        return setSelectionRange(e.target, cursor);
       }
     };
     restrictNumeric = function(e) {
