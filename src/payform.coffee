@@ -15,6 +15,8 @@
     this[name] = definition()
 )('payform', ->
 
+  isAndroid = /Android/i.test(typeof navigator != 'undefined' && navigator.userAgent)
+
   _getCaretPos = (ele) ->
     if ele.selectionStart?
       return ele.selectionStart
@@ -187,13 +189,23 @@
 
     value
 
+  setSelectionRange = (target, cursor) ->
+    if isAndroid
+      window.setTimeout ( ->
+        cursor = _getCaretPos(target)
+        target.setSelectionRange(cursor, cursor)
+      ), 0
+      return
+
+    return target.setSelectionRange(cursor, cursor)
+
   # Format Card Number
 
   reFormatCardNumber = (e) ->
     cursor = _getCaretPos(e.target)
     e.target.value = payform.formatCardNumber(e.target.value)
     if cursor? and e.type isnt 'change'
-      e.target.setSelectionRange(cursor, cursor)
+      setSelectionRange(e.target, cursor)
 
   formatCardNumber = (e) ->
     # Only format if input is a number
@@ -253,7 +265,7 @@
     cursor = _getCaretPos(e.target)
     e.target.value = payform.formatCardExpiry(e.target.value)
     if cursor? and e.type isnt 'change'
-      e.target.setSelectionRange(cursor, cursor)
+      setSelectionRange(e.target, cursor)
 
   formatCardExpiry = (e) ->
     # Only format if input is a number
@@ -305,7 +317,7 @@
     cursor = _getCaretPos(e.target)
     e.target.value = replaceFullWidthChars(e.target.value).replace(/\D/g, '')[0...4]
     if cursor? and e.type isnt 'change'
-      e.target.setSelectionRange(cursor, cursor)
+      setSelectionRange(e.target, cursor)
 
   # Restrictions
 
