@@ -198,6 +198,7 @@
   # Format Card Number
 
   reFormatCardNumber = (e) ->
+    return if e.target.value is ""
     cursor = _getCaretPos(e.target)
     e.target.value = payform.formatCardNumber(e.target.value)
     if cursor? and e.type isnt 'change'
@@ -258,6 +259,7 @@
   # Format Expiry
 
   reFormatExpiry = (e) ->
+    return if e.target.value is ""
     cursor = _getCaretPos(e.target)
     e.target.value = payform.formatCardExpiry(e.target.value)
     if cursor? and e.type isnt 'change'
@@ -310,6 +312,7 @@
   # Format CVC
 
   reFormatCVC = (e) ->
+    return if e.target.value is ""
     cursor = _getCaretPos(e.target)
     e.target.value = replaceFullWidthChars(e.target.value).replace(/\D/g, '')[0...4]
     if cursor? and e.type isnt 'change'

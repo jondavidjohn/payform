@@ -246,6 +246,9 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
   };
   reFormatCardNumber = function(e) {
     var cursor;
+    if (e.target.value === "") {
+      return;
+    }
     cursor = _getCaretPos(e.target);
     e.target.value = payform.formatCardNumber(e.target.value);
     if ((cursor != null) && e.type !== 'change') {
@@ -313,6 +316,9 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
   };
   reFormatExpiry = function(e) {
     var cursor;
+    if (e.target.value === "") {
+      return;
+    }
     cursor = _getCaretPos(e.target);
     e.target.value = payform.formatCardExpiry(e.target.value);
     if ((cursor != null) && e.type !== 'change') {
@@ -379,6 +385,9 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
   };
   reFormatCVC = function(e) {
     var cursor;
+    if (e.target.value === "") {
+      return;
+    }
     cursor = _getCaretPos(e.target);
     e.target.value = replaceFullWidthChars(e.target.value).replace(/\D/g, '').slice(0, 4);
     if ((cursor != null) && e.type !== 'change') {
