@@ -7,7 +7,7 @@ dist/payform.js: src/payform.coffee
 	$(BIN)coffee -c --no-header -o dist/ src/payform.coffee
 
 dist/payform.min.js: dist/payform.js
-	$(BIN)uglify -s dist/payform.js -o dist/payform.min.js
+	$(BIN)uglifyjs dist/payform.js -o dist/payform.min.js
 
 dist/jquery.payform.js: src/jquery.payform.coffee
 	$(BIN)browserify             \
@@ -17,7 +17,7 @@ dist/jquery.payform.js: src/jquery.payform.coffee
 	  src/jquery.payform.coffee > dist/jquery.payform.js
 
 dist/jquery.payform.min.js: dist/jquery.payform.js
-	$(BIN)uglify -s dist/jquery.payform.js -o dist/jquery.payform.min.js
+	$(BIN)uglifyjs dist/jquery.payform.js -o dist/jquery.payform.min.js
 
 watch: build
 	$(BIN)watch 'make build' src
