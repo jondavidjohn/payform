@@ -1,3 +1,6 @@
+= 1.2.2
+  * Fix IE11 hanging on input (see PR #32)
+
 = 1.2.1
   * Correct Diners Club Pattern (regarding #19 and #22)
 
