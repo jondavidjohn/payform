@@ -334,11 +334,9 @@
     # Restrict number of digits
     value = (e.target.value + digit).replace(/\D/g, '')
     card  = cardFromNumber(value)
+    maxLength = if card then card.length[card.length.length - 1] else 16
 
-    if card 
-      if value.length > card.length[card.length.length - 1]
-        e.preventDefault()
-    else if value.length > 16
+    if value.length > maxLength
       e.preventDefault()
 
   restrictExpiry = (e) ->
