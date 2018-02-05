@@ -335,8 +335,9 @@
     value = (e.target.value + digit).replace(/\D/g, '')
     card  = cardFromNumber(value)
 
-    if card and value.length > card.length[card.length.length - 1]
-      e.preventDefault()
+    if card 
+      if value.length > card.length[card.length.length - 1]
+        e.preventDefault()
     else if value.length > 16
       e.preventDefault()
 
