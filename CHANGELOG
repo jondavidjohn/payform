@@ -1,3 +1,6 @@
+= 1.2.3
+  * Fix issue in handling full width characters (see PR #36)
+
 = 1.2.2
   * Fix IE11 hanging on input (see PR #32)
 

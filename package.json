@@ -1,6 +1,6 @@
 {
   "name": "payform",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "A general purpose library for building credit card forms, validating inputs, and formatting numbers.",
   "keywords": [
     "payment",
@@ -27,7 +27,7 @@
     "watch": "make watch"
   },
   "devDependencies": {
-    "coffee-script": "~1.9.0",
+    "coffeescript": "~1.9.0",
     "watch": "~0.13.0",
     "uglify-js": "~3.3.7",
     "mocha": "~2.1.0",
