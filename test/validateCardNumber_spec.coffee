@@ -75,4 +75,4 @@ describe 'payform', ->
 
       assert(payform.validateCardNumber('3530111333300000'), 'jcb')
       assert(payform.validateCardNumber('3566002020360505'), 'jcb')
-
+      assert(payform.validateCardNumber('6362970000457013'), 'elo')
