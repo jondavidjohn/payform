@@ -199,8 +199,8 @@
 
   reFormatCardNumber = (e) ->
     return if e.target.value is ""
-    cursor = _getCaretPos(e.target)
     e.target.value = payform.formatCardNumber(e.target.value)
+    cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
 
@@ -260,8 +260,8 @@
 
   reFormatExpiry = (e) ->
     return if e.target.value is ""
-    cursor = _getCaretPos(e.target)
     e.target.value = payform.formatCardExpiry(e.target.value)
+    cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
 
