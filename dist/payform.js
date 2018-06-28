@@ -5,7 +5,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.2.2
+  Version: 1.2.3
  */
 
 (function() {
@@ -219,8 +219,8 @@
       if (e.target.value === "") {
         return;
       }
-      cursor = _getCaretPos(e.target);
       e.target.value = payform.formatCardNumber(e.target.value);
+      cursor = _getCaretPos(e.target);
       if ((cursor != null) && e.type !== 'change') {
         return e.target.setSelectionRange(cursor, cursor);
       }
@@ -289,8 +289,8 @@
       if (e.target.value === "") {
         return;
       }
-      cursor = _getCaretPos(e.target);
       e.target.value = payform.formatCardExpiry(e.target.value);
+      cursor = _getCaretPos(e.target);
       if ((cursor != null) && e.type !== 'change') {
         return e.target.setSelectionRange(cursor, cursor);
       }
