@@ -52,6 +52,14 @@
     # Debit cards must come first, since they have more
     # specific patterns than their credit-card equivalents.
     {
+      type: 'elo'
+      pattern: /^((50670[7-8])|(506715)|(50671[7-9])|(50672[0-1])|(50672[4-9])|(50673[0-3])|(506739)|(50674[0-8])|(50675[0-3])|(50677[4-8])|(50900[0-9])|(50901[3-9])|(50902[0-9])|(50903[1-9])|(50904[0-9])|(50905[0-9])|(50906[0-4])|(50906[6-9])|(50907[0-2])|(50907[4-5])|(636368)|(636297)|(504175)|(438935)|(40117[8-9])|(45763[1-2])|(457393)|(431274)|(50907[6-9])|(50908[0-9])|(627780))/
+      format: defaultFormat
+      length: [16]
+      cvcLength: [3]
+      luhn: true
+    }
+    {
       type: 'visaelectron'
       pattern: /^4(026|17500|405|508|844|91[37])/
       format: defaultFormat
@@ -190,6 +198,7 @@
   # Format Card Number
 
   reFormatCardNumber = (e) ->
+    return if e.target.value is ""
     e.target.value = payform.formatCardNumber(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
@@ -250,6 +259,7 @@
   # Format Expiry
 
   reFormatExpiry = (e) ->
+    return if e.target.value is ""
     e.target.value = payform.formatCardExpiry(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
@@ -302,6 +312,7 @@
   # Format CVC
 
   reFormatCVC = (e) ->
+    return if e.target.value is ""
     cursor = _getCaretPos(e.target)
     e.target.value = replaceFullWidthChars(e.target.value).replace(/\D/g, '')[0...4]
     if cursor? and e.type isnt 'change'
