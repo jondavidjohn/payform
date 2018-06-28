@@ -209,8 +209,8 @@
     };
     reFormatCardNumber = function(e) {
       var cursor;
-      cursor = _getCaretPos(e.target);
       e.target.value = payform.formatCardNumber(e.target.value);
+      cursor = _getCaretPos(e.target);
       if ((cursor != null) && e.type !== 'change') {
         return e.target.setSelectionRange(cursor, cursor);
       }
@@ -276,8 +276,8 @@
     };
     reFormatExpiry = function(e) {
       var cursor;
-      cursor = _getCaretPos(e.target);
       e.target.value = payform.formatCardExpiry(e.target.value);
+      cursor = _getCaretPos(e.target);
       if ((cursor != null) && e.type !== 'change') {
         return e.target.setSelectionRange(cursor, cursor);
       }
