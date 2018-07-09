@@ -4,7 +4,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.2.3
+  Version: 1.2.4
 ###
 ((name, definition) ->
   if module?
