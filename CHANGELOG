@@ -1,3 +1,7 @@
+= 1.2.4
+  * Fix issue with cutting off last 2 digits of some cards (see #34 and #25)
+  * Update Mocha to 3.5.3 (CVE)
+
 = 1.2.3
   * Fix issue in handling full width characters (see PR #36)
 

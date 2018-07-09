@@ -37,7 +37,7 @@ payform = require(2);
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.2.3
+  Version: 1.2.4
  */
 var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -411,7 +411,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     }
   };
   restrictCardNumber = function(e) {
-    var card, digit, value;
+    var card, digit, maxLength, value;
     digit = String.fromCharCode(e.which);
     if (!/^\d+$/.test(digit)) {
       return;
@@ -421,9 +421,8 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     }
     value = (e.target.value + digit).replace(/\D/g, '');
     card = cardFromNumber(value);
-    if (card && value.length > card.length[card.length.length - 1]) {
-      return e.preventDefault();
-    } else if (value.length > 16) {
+    maxLength = card ? card.length[card.length.length - 1] : 16;
+    if (value.length > maxLength) {
       return e.preventDefault();
     }
   };
