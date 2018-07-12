@@ -29,12 +29,21 @@
 
   _eventNormalize = (listener) ->
     return (e = window.event) ->
-      Object.defineProperties e,
-        target: value: e.target or e.srcElement
-        which: value: e.which or e.keyCode
-      unless e.preventDefault?
-        e.preventDefault = -> this.returnValue = false
-      listener(e)
+      if e.inputType == 'insertCompositionText' and !e.isComposing
+        return
+      newEvt =
+        target: e.target or e.srcElement
+        which: e.which or e.keyCode
+        type: e.type
+        metaKey: e.metaKey
+        ctrlKey: e.ctrlKey
+        preventDefault: ->
+          if e.preventDefault
+            e.preventDefault()
+          else
+            e.returnValue = false
+          return
+      listener(newEvt)
 
   _on = (ele, event, listener) ->
     listener = _eventNormalize(listener)
