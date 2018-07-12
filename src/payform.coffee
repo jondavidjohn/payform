@@ -29,8 +29,9 @@
 
   _eventNormalize = (listener) ->
     return (e = window.event) ->
-      e.target = e.target or e.srcElement
-      e.which = e.which or e.keyCode
+      Object.defineProperties e,
+        target: value: e.target or e.srcElement
+        which: value: e.which or e.keyCode
       unless e.preventDefault?
         e.preventDefault = -> this.returnValue = false
       listener(e)
