@@ -29,6 +29,8 @@
 
   _eventNormalize = (listener) ->
     return (e = window.event) ->
+      if e.inputType == 'insertCompositionText' and !e.isComposing
+        return
       e.target = e.target or e.srcElement
       e.which = e.which or e.keyCode
       unless e.preventDefault?
