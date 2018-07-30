@@ -200,7 +200,7 @@
   reFormatCardNumber = (e) ->
     return if e.target.value is ""
     e.target.value = payform.formatCardNumber(e.target.value)
-    if e.target.value.indexOf('‎\u200e') == -1 and document.dir == 'rtl'
+    if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
       e.target.value = '‎\u200e'.concat(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
@@ -263,7 +263,7 @@
   reFormatExpiry = (e) ->
     return if e.target.value is ""
     e.target.value = payform.formatCardExpiry(e.target.value)
-    if e.target.value.indexOf('‎\u200e') == -1 and document.dir == 'rtl'
+    if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1 
       e.target.value = '‎\u200e'.concat(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
