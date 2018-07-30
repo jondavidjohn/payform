@@ -31,11 +31,19 @@
     return (e = window.event) ->
       if e.inputType == 'insertCompositionText' and !e.isComposing
         return
-      e.target = e.target or e.srcElement
-      e.which = e.which or e.keyCode
-      unless e.preventDefault?
-        e.preventDefault = -> this.returnValue = false
-      listener(e)
+      newEvt =
+        target: e.target or e.srcElement
+        which: e.which or e.keyCode
+        type: e.type
+        metaKey: e.metaKey
+        ctrlKey: e.ctrlKey
+        preventDefault: ->
+          if e.preventDefault
+            e.preventDefault()
+          else
+            e.returnValue = false
+          return
+      listener(newEvt)
 
   _on = (ele, event, listener) ->
     listener = _eventNormalize(listener)
