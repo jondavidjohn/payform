@@ -5,7 +5,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.2.4
+  Version: 1.2.5
  */
 
 (function() {
@@ -37,17 +37,28 @@
     };
     _eventNormalize = function(listener) {
       return function(e) {
+        var newEvt;
         if (e == null) {
           e = window.event;
         }
-        e.target = e.target || e.srcElement;
-        e.which = e.which || e.keyCode;
-        if (e.preventDefault == null) {
-          e.preventDefault = function() {
-            return this.returnValue = false;
-          };
+        if (e.inputType === 'insertCompositionText' && !e.isComposing) {
+          return;
         }
-        return listener(e);
+        newEvt = {
+          target: e.target || e.srcElement,
+          which: e.which || e.keyCode,
+          type: e.type,
+          metaKey: e.metaKey,
+          ctrlKey: e.ctrlKey,
+          preventDefault: function() {
+            if (e.preventDefault) {
+              e.preventDefault();
+            } else {
+              e.returnValue = false;
+            }
+          }
+        };
+        return listener(newEvt);
       };
     };
     _on = function(ele, event, listener) {
@@ -220,6 +231,9 @@
         return;
       }
       e.target.value = payform.formatCardNumber(e.target.value);
+      if (document.dir === 'rtl' && e.target.value.indexOf('‎\u200e') === -1) {
+        e.target.value = '‎\u200e'.concat(e.target.value);
+      }
       cursor = _getCaretPos(e.target);
       if ((cursor != null) && e.type !== 'change') {
         return e.target.setSelectionRange(cursor, cursor);
@@ -290,6 +304,9 @@
         return;
       }
       e.target.value = payform.formatCardExpiry(e.target.value);
+      if (document.dir === 'rtl' && e.target.value.indexOf('‎\u200e') === -1) {
+        e.target.value = '‎\u200e'.concat(e.target.value);
+      }
       cursor = _getCaretPos(e.target);
       if ((cursor != null) && e.type !== 'change') {
         return e.target.setSelectionRange(cursor, cursor);

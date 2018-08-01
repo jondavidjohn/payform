@@ -4,7 +4,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.2.4
+  Version: 1.2.5
 ###
 ((name, definition) ->
   if module?
@@ -29,11 +29,21 @@
 
   _eventNormalize = (listener) ->
     return (e = window.event) ->
-      e.target = e.target or e.srcElement
-      e.which = e.which or e.keyCode
-      unless e.preventDefault?
-        e.preventDefault = -> this.returnValue = false
-      listener(e)
+      if e.inputType == 'insertCompositionText' and !e.isComposing
+        return
+      newEvt =
+        target: e.target or e.srcElement
+        which: e.which or e.keyCode
+        type: e.type
+        metaKey: e.metaKey
+        ctrlKey: e.ctrlKey
+        preventDefault: ->
+          if e.preventDefault
+            e.preventDefault()
+          else
+            e.returnValue = false
+          return
+      listener(newEvt)
 
   _on = (ele, event, listener) ->
     listener = _eventNormalize(listener)
@@ -200,6 +210,8 @@
   reFormatCardNumber = (e) ->
     return if e.target.value is ""
     e.target.value = payform.formatCardNumber(e.target.value)
+    if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
+      e.target.value = '‎\u200e'.concat(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
@@ -261,6 +273,8 @@
   reFormatExpiry = (e) ->
     return if e.target.value is ""
     e.target.value = payform.formatCardExpiry(e.target.value)
+    if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1 
+      e.target.value = '‎\u200e'.concat(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
