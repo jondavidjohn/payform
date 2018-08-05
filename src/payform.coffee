@@ -63,7 +63,7 @@
     # specific patterns than their credit-card equivalents.
     {
       type: 'elo'
-      pattern: /^((50670[7-8])|(506715)|(50671[7-9])|(50672[0-1])|(50672[4-9])|(50673[0-3])|(506739)|(50674[0-8])|(50675[0-3])|(50677[4-8])|(50900[0-9])|(50901[3-9])|(50902[0-9])|(50903[1-9])|(50904[0-9])|(50905[0-9])|(50906[0-4])|(50906[6-9])|(50907[0-2])|(50907[4-5])|(636368)|(636297)|(504175)|(438935)|(40117[8-9])|(45763[1-2])|(457393)|(431274)|(50907[6-9])|(50908[0-9])|(627780))/
+      pattern: /^(4011(78|79)|43(1274|8935)|45(1416|7393|763(1|2))|50(4175|6699|67[0-7][0-9]|9000)|627780|63(6297|6368)|650(03([^4])|04([0-9])|05(0|1)|4(0[5-9]|3[0-9]|8[5-9]|9[0-9])|5([0-2][0-9]|3[0-8])|9([2-6][0-9]|7[0-8])|541|700|720|901)|651652|655000|655021)/
       format: defaultFormat
       length: [16]
       cvcLength: [3]
@@ -79,7 +79,7 @@
     }
     {
       type: 'maestro'
-      pattern: /^(5(018|0[23]|[68])|6(39|7))/
+      pattern: /^(5018|5020|5038|6304|6703|6708|6759|676[1-3])/
       format: defaultFormat
       length: [12..19]
       cvcLength: [3]
@@ -106,13 +106,13 @@
       type: 'visa'
       pattern: /^4/
       format: defaultFormat
-      length: [13, 16]
+      length: [13, 16, 19]
       cvcLength: [3]
       luhn: true
     }
     {
       type: 'mastercard'
-      pattern: /^(5[1-5]|2[2-7])/
+      pattern: /^(5[1-5]|677189)|^(222[1-9]|2[3-6]\d{2}|27[0-1]\d|2720)/
       format: defaultFormat
       length: [16]
       cvcLength: [3]
@@ -123,20 +123,20 @@
       pattern: /^3[47]/
       format: /(\d{1,4})(\d{1,6})?(\d{1,5})?/
       length: [15]
-      cvcLength: [3..4]
+      cvcLength: [4]
       luhn: true
     }
     {
       type: 'dinersclub'
-      pattern: /^3[0689]/
-      format: /(\d{1,4})(\d{1,4})?(\d{1,4})?(\d{1,2})?/
+      pattern: /^(36|38|30[0-5])/
+      format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/
       length: [14]
       cvcLength: [3]
       luhn: true
     }
     {
       type: 'discover'
-      pattern: /^6([045]|22)/
+      pattern: /^(6011|65|64[4-9]|622)/
       format: defaultFormat
       length: [16]
       cvcLength: [3]
@@ -144,7 +144,7 @@
     }
     {
       type: 'unionpay'
-      pattern: /^(62|88)/
+      pattern: /^62/
       format: defaultFormat
       length: [16..19]
       cvcLength: [3]
@@ -155,6 +155,22 @@
       pattern: /^35/
       format: defaultFormat
       length: [16]
+      cvcLength: [3]
+      luhn: true
+    }
+    {
+      type: 'hipercard'
+      pattern: /^(384100|384140|384160|606282|637095|637568|60(?!11))/
+      format: defaultFormat
+      length: [14..19]
+      cvcLength: [3]
+      luhn: true
+    }
+    {
+      type: 'laser'
+      pattern: /^(6706|6771|6709)/
+      format: defaultFormat
+      length: [16..19]
       cvcLength: [3]
       luhn: true
     }
@@ -273,7 +289,7 @@
   reFormatExpiry = (e) ->
     return if e.target.value is ""
     e.target.value = payform.formatCardExpiry(e.target.value)
-    if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1 
+    if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
       e.target.value = '‎\u200e'.concat(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
