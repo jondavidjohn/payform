@@ -27,8 +27,12 @@ describe 'payform', ->
       topic = payform.validateCardCVC('123')
       assert.equal topic, true
 
-    it 'should validate a three digit number with card type amex', ->
+    it 'should fail a three digit number with card type amex', ->
       topic = payform.validateCardCVC('123', 'amex')
+      assert.equal topic, false
+
+    it 'should validate a four digit number with card type amex', ->
+      topic = payform.validateCardCVC('1234', 'amex')
       assert.equal topic, true
 
     it 'should validate a three digit number with card type other than amex', ->
