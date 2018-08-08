@@ -218,11 +218,11 @@
   # Format Card Number
 
   reFormatCardNumber = (e) ->
+    cursor = _getCaretPos(e.target)
     return if e.target.value is ""
     e.target.value = payform.formatCardNumber(e.target.value)
     if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
       e.target.value = '‎\u200e'.concat(e.target.value)
-    cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
 
