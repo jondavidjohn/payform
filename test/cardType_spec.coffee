@@ -65,6 +65,7 @@ describe 'payform', ->
 
       assert.equal(payform.parseCardType('3530111333300000'), 'jcb')
       assert.equal(payform.parseCardType('3566002020360505'), 'jcb')
+      assert.equal(payform.parseCardType('3536408073177691495'), 'jcb')
 
       assert.equal(payform.parseCardType('6062821086773091'), 'hipercard')
       assert.equal(payform.parseCardType('6375683647504601'), 'hipercard')
