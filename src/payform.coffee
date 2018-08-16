@@ -164,7 +164,7 @@
       type: 'jcb'
       pattern: /^35/
       format: defaultFormat
-      length: [16]
+      length: [16..19]
       cvcLength: [3]
       luhn: true
     }
