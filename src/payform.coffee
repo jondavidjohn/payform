@@ -54,6 +54,16 @@
 
   payform = {}
 
+  # Key Codes
+  
+  keyCodes = {
+    UNKNOWN : 0,
+    BACKSPACE : 8,
+    PAGE_UP : 33,
+    ARROW_LEFT : 37, 
+    ARROW_RIGHT : 39,
+  }
+
   # Utils
 
   defaultFormat = /(\d{1,4})/g
@@ -270,7 +280,7 @@
     value = e.target.value
 
     # Return unless backspacing
-    return unless e.which is 8
+    return unless e.which is keyCodes.BACKSPACE
 
     # Return if focus isn't at the end of the text
     cursor = _getCaretPos(e.target)
@@ -329,7 +339,7 @@
     value = e.target.value
 
     # Return unless backspacing
-    return unless e.which is 8
+    return unless e.which is keyCodes.BACKSPACE
 
     # Return if focus isn't at the end of the text
     cursor = _getCaretPos(e.target)
@@ -356,10 +366,10 @@
     return if e.metaKey or e.ctrlKey
 
     # If keycode is a special char (WebKit)
-    return if e.which is 0
+    return if [keyCodes.UNKNOWN, keyCodes.ARROW_LEFT, keyCodes.ARROW_RIGHT].indexOf(e.which) > -1
 
     # If char is a special char (Firefox)
-    return if e.which < 33
+    return if e.which < keyCodes.PAGE_UP
 
     input = String.fromCharCode(e.which)
 
