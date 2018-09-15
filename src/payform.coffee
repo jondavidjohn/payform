@@ -259,6 +259,8 @@
     cursor = _getCaretPos(e.target)
     return if cursor and cursor isnt value.length
 
+    return if (e.target.selectionEnd - e.target.selectionStart) > 1
+
     # Remove the digit + trailing space
     if /\d\s$/.test(value)
       e.preventDefault()
