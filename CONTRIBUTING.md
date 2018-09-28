@@ -42,7 +42,7 @@ Good Pull Requests include:
 
 We strive for [semantic versioning](https://semver.org/) for our version number assignment, and utilize the [git flow](https://github.com/nvie/gitflow) tool to execute releases in the repository.
 
-All new functionality should come in on the `develop` branch and when you're ready to cut a new release, start the process by using the
+All new functionality should come in on the `develop` branch and when you're ready to cut a new release, start the process by using
 
 ```
   $> git flow release start 1.x.x
@@ -52,7 +52,7 @@ This should give you a release branch off develop and some relevant instructions
 
 This is when you should:
   - Bump the version numbers in both `src/payform.coffee` and `package.json`
-  - Update the `CHANGELOG`
+  - Update the `CHANGELOG` by adding a new section for this version
   - Ensure the tests pas with `make test`
   - Run `make clean && make build`
 
