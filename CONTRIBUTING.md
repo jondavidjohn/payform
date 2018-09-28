@@ -40,7 +40,7 @@ Good Pull Requests include:
 
 ## Release Process
 
-We strive for [semantic versioning]() for our version number assignment, and utilize the [git flow]() tool to execute releases in the repository.
+We strive for [semantic versioning](https://semver.org/) for our version number assignment, and utilize the [git flow](https://github.com/nvie/gitflow) tool to execute releases in the repository.
 
 All new functionality should come in on the `develop` branch and when you're ready to cut a new release, start the process by using the
 
