@@ -53,6 +53,7 @@ This should give you a release branch off develop and some relevant instructions
 This is when you should:
   - Bump the version numbers in both `src/payform.coffee` and `package.json`
   - Update the `CHANGELOG`
+  - Ensure the tests pas with `make test`
   - Run `make clean && make build`
 
 Once you've done this and committed these changes to the release branch, you are ready to run:
