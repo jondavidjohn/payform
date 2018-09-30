@@ -167,6 +167,14 @@
   cardFromType = (type) ->
     return card for card in payform.cards when card.type is type
 
+  getDirectionality = (target) ->
+    # Work around Firefox not returning the styles in some edge cases.
+    # In Firefox < 62, style can be `null`.
+    # In Firefox 62+, `style['direction']` can be an empty string.
+    # See https://bugzilla.mozilla.org/show_bug.cgi?id=1467722.
+    style = getComputedStyle(target)
+    style and style['direction'] or document.dir
+
   luhnCheck = (num) ->
     odd = true
     sum = 0
@@ -209,15 +217,16 @@
 
   reFormatCardNumber = (e) ->
     return if e.target.value is ""
-    if document.dir == 'ltr'
+
+    if getDirectionality(e.target) == 'ltr'
       cursor = _getCaretPos(e.target)
 
     e.target.value = payform.formatCardNumber(e.target.value)
 
-    if document.dir == 'ltr' and cursor isnt e.target.selectionStart
+    if getDirectionality(e.target) == 'ltr' and cursor isnt e.target.selectionStart
       cursor = _getCaretPos(e.target)
 
-    if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
+    if getDirectionality(e.target) == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
       e.target.value = '‎\u200e'.concat(e.target.value)
 
     cursor = _getCaretPos(e.target)
@@ -282,7 +291,7 @@
   reFormatExpiry = (e) ->
     return if e.target.value is ""
     e.target.value = payform.formatCardExpiry(e.target.value)
-    if document.dir == 'rtl' and e.target.value.indexOf('‎\u200e') == -1 
+    if getDirectionality(e.target) == 'rtl' and e.target.value.indexOf('‎\u200e') == -1 
       e.target.value = '‎\u200e'.concat(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
