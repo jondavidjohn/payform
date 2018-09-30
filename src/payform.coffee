@@ -432,6 +432,7 @@
       prefix = prefix.toString()[0..1]
       year   = prefix + year
 
+    # Remove left-to-right mark LTR invisible unicode control character used in right-to-left contexts
     month = parseInt(month.replace(/[\u200e]/g, ""), 10);
     year  = parseInt(year, 10)
 
