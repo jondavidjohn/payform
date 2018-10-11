@@ -65,6 +65,15 @@ describe 'payform', ->
 
       assert.equal(payform.parseCardType('3530111333300000'), 'jcb')
       assert.equal(payform.parseCardType('3566002020360505'), 'jcb')
+      assert.equal(payform.parseCardType('3536408073177691495'), 'jcb')
+
+      assert.equal(payform.parseCardType('6062821086773091'), 'hipercard')
+      assert.equal(payform.parseCardType('6375683647504601'), 'hipercard')
+      assert.equal(payform.parseCardType('6370957513839696'), 'hipercard')
+      assert.equal(payform.parseCardType('6375688248373892'), 'hipercard')
+      assert.equal(payform.parseCardType('6012135281693108'), 'hipercard')
+      assert.equal(payform.parseCardType('38410036464094'), 'hipercard')
+      assert.equal(payform.parseCardType('38414050328938'), 'hipercard')
 
   describe '#cards', ->
     it 'should expose an array of standard card types', ->
