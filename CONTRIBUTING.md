@@ -42,6 +42,14 @@ Good Pull Requests include:
 
 We strive for [semantic versioning](https://semver.org/) for our version number assignment, and utilize the [git flow](https://github.com/nvie/gitflow) tool to execute releases in the repository.
 
+You can initialize git flow once it is installed with
+
+```
+  $> git flow init -d
+```
+
+This will use the default branch naming conventions for git flow.
+
 All new functionality should come in on the `develop` branch and when you're ready to cut a new release, start the process by using
 
 ```
