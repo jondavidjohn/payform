@@ -1,3 +1,10 @@
+= 1.3.0
+  * Updated Issuer Identification Number (IIN) patterns with documentaion (see PR #44 and #47)
+  * Allow right and left arrow keys to be used while navigating inside all input types (see PR #45)
+  * Fix issue with clearning selected text when typing (see PR #48)
+  * Fix issuewith the expiry field parsing when typing in a RTL context (see PR #50)
+  * Allow cursor repositioning when pasting full card numbers (see PR #51)
+
 = 1.2.5
   * Fixes #37, allowing for vendoring and fix event normalization (PR #39)
   * Fixes #38, full width character fixes for Safari
