@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 var payform;
 
 payform = require(2);
@@ -28,7 +28,6 @@ payform = require(2);
 })(window.jQuery || window.Zepto);
 
 
-
 },{"2":2}],2:[function(require,module,exports){
 
 /*
@@ -37,7 +36,7 @@ payform = require(2);
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.2.5
+  Version: 1.3.0
  */
 var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -50,7 +49,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     return this[name] = definition();
   }
 })('payform', function() {
-  var _eventNormalize, _getCaretPos, _on, cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, hasTextSelected, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
+  var _eventNormalize, _getCaretPos, _on, cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, getDirectionality, hasTextSelected, keyCodes, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
   _getCaretPos = function(ele) {
     var r, rc, re;
     if (ele.selectionStart != null) {
@@ -100,11 +99,18 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     }
   };
   payform = {};
+  keyCodes = {
+    UNKNOWN: 0,
+    BACKSPACE: 8,
+    PAGE_UP: 33,
+    ARROW_LEFT: 37,
+    ARROW_RIGHT: 39
+  };
   defaultFormat = /(\d{1,4})/g;
   payform.cards = [
     {
       type: 'elo',
-      pattern: /^((50670[7-8])|(506715)|(50671[7-9])|(50672[0-1])|(50672[4-9])|(50673[0-3])|(506739)|(50674[0-8])|(50675[0-3])|(50677[4-8])|(50900[0-9])|(50901[3-9])|(50902[0-9])|(50903[1-9])|(50904[0-9])|(50905[0-9])|(50906[0-4])|(50906[6-9])|(50907[0-2])|(50907[4-5])|(636368)|(636297)|(504175)|(438935)|(40117[8-9])|(45763[1-2])|(457393)|(431274)|(50907[6-9])|(50908[0-9])|(627780))/,
+      pattern: /^(4011(78|79)|43(1274|8935)|45(1416|7393|763(1|2))|50(4175|6699|67[0-7][0-9]|9000)|627780|63(6297|6368)|650(03([^4])|04([0-9])|05(0|1)|4(0[5-9]|3[0-9]|8[5-9]|9[0-9])|5([0-2][0-9]|3[0-8])|9([2-6][0-9]|7[0-8])|541|700|720|901)|651652|655000|655021)/,
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
@@ -118,7 +124,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       luhn: true
     }, {
       type: 'maestro',
-      pattern: /^(5(018|0[23]|[68])|6(39|7))/,
+      pattern: /^(5018|5020|5038|6304|6703|6708|6759|676[1-3])/,
       format: defaultFormat,
       length: [12, 13, 14, 15, 16, 17, 18, 19],
       cvcLength: [3],
@@ -141,12 +147,12 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       type: 'visa',
       pattern: /^4/,
       format: defaultFormat,
-      length: [13, 16],
+      length: [13, 16, 19],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'mastercard',
-      pattern: /^(5[1-5]|2[2-7])/,
+      pattern: /^(5[1-5]|677189)|^(222[1-9]|2[3-6]\d{2}|27[0-1]\d|2720)/,
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
@@ -156,25 +162,32 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       pattern: /^3[47]/,
       format: /(\d{1,4})(\d{1,6})?(\d{1,5})?/,
       length: [15],
-      cvcLength: [3, 4],
+      cvcLength: [4],
+      luhn: true
+    }, {
+      type: 'hipercard',
+      pattern: /^(384100|384140|384160|606282|637095|637568|60(?!11))/,
+      format: defaultFormat,
+      length: [14, 15, 16, 17, 18, 19],
+      cvcLength: [3],
       luhn: true
     }, {
       type: 'dinersclub',
-      pattern: /^3[0689]/,
-      format: /(\d{1,4})(\d{1,4})?(\d{1,4})?(\d{1,2})?/,
+      pattern: /^(36|38|30[0-5])/,
+      format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/,
       length: [14],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'discover',
-      pattern: /^6([045]|22)/,
+      pattern: /^(6011|65|64[4-9]|622)/,
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
       luhn: true
     }, {
       type: 'unionpay',
-      pattern: /^(62|88)/,
+      pattern: /^62/,
       format: defaultFormat,
       length: [16, 17, 18, 19],
       cvcLength: [3],
@@ -183,7 +196,14 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       type: 'jcb',
       pattern: /^35/,
       format: defaultFormat,
-      length: [16],
+      length: [16, 17, 18, 19],
+      cvcLength: [3],
+      luhn: true
+    }, {
+      type: 'laser',
+      pattern: /^(6706|6771|6709)/,
+      format: defaultFormat,
+      length: [16, 17, 18, 19],
       cvcLength: [3],
       luhn: true
     }
@@ -208,6 +228,11 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
         return card;
       }
     }
+  };
+  getDirectionality = function(target) {
+    var style;
+    style = getComputedStyle(target);
+    return style && style['direction'] || document.dir;
   };
   luhnCheck = function(num) {
     var digit, digits, i, len, odd, sum;
@@ -257,15 +282,22 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
   };
   reFormatCardNumber = function(e) {
     var cursor;
+    cursor = _getCaretPos(e.target);
     if (e.target.value === "") {
       return;
     }
+    if (getDirectionality(e.target) === 'ltr') {
+      cursor = _getCaretPos(e.target);
+    }
     e.target.value = payform.formatCardNumber(e.target.value);
-    if (document.dir === 'rtl' && e.target.value.indexOf('‎\u200e') === -1) {
+    if (getDirectionality(e.target) === 'ltr' && cursor !== e.target.selectionStart) {
+      cursor = _getCaretPos(e.target);
+    }
+    if (getDirectionality(e.target) === 'rtl' && e.target.value.indexOf('‎\u200e') === -1) {
       e.target.value = '‎\u200e'.concat(e.target.value);
     }
     cursor = _getCaretPos(e.target);
-    if ((cursor != null) && e.type !== 'change') {
+    if ((cursor != null) && cursor !== 0 && e.type !== 'change') {
       return e.target.setSelectionRange(cursor, cursor);
     }
   };
@@ -309,11 +341,14 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
   formatBackCardNumber = function(e) {
     var cursor, value;
     value = e.target.value;
-    if (e.which !== 8) {
+    if (e.which !== keyCodes.BACKSPACE) {
       return;
     }
     cursor = _getCaretPos(e.target);
     if (cursor && cursor !== value.length) {
+      return;
+    }
+    if ((e.target.selectionEnd - e.target.selectionStart) > 1) {
       return;
     }
     if (/\d\s$/.test(value)) {
@@ -334,7 +369,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       return;
     }
     e.target.value = payform.formatCardExpiry(e.target.value);
-    if (document.dir === 'rtl' && e.target.value.indexOf('‎\u200e') === -1) {
+    if (getDirectionality(e.target) === 'rtl' && e.target.value.indexOf('‎\u200e') === -1) {
       e.target.value = '‎\u200e'.concat(e.target.value);
     }
     cursor = _getCaretPos(e.target);
@@ -386,7 +421,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
   formatBackExpiry = function(e) {
     var cursor, value;
     value = e.target.value;
-    if (e.which !== 8) {
+    if (e.which !== keyCodes.BACKSPACE) {
       return;
     }
     cursor = _getCaretPos(e.target);
@@ -416,10 +451,10 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     if (e.metaKey || e.ctrlKey) {
       return;
     }
-    if (e.which === 0) {
+    if ([keyCodes.UNKNOWN, keyCodes.ARROW_LEFT, keyCodes.ARROW_RIGHT].indexOf(e.which) > -1) {
       return;
     }
-    if (e.which < 33) {
+    if (e.which < keyCodes.PAGE_UP) {
       return;
     }
     input = String.fromCharCode(e.which);
@@ -513,7 +548,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       prefix = prefix.toString().slice(0, 2);
       year = prefix + year;
     }
-    month = parseInt(month, 10);
+    month = parseInt(month.replace(/[\u200e]/g, ""), 10);
     year = parseInt(year, 10);
     return {
       month: month,
@@ -634,7 +669,6 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
   };
   return payform;
 });
-
 
 
 },{}]},{},[1]);
