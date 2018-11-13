@@ -43,6 +43,10 @@ describe 'payform', ->
       assert(payform.validateCardNumber('4917300800000000'), 'visaelectron')
 
       assert(payform.validateCardNumber('6759649826438453'), 'maestro')
+      assert(payform.validateCardNumber('639002000000000003'), 'maestro')
+      assert(payform.validateCardNumber('6771798021000008'), 'maestro')
+      assert(payform.validateCardNumber('6771830999991239'), 'maestro')
+      assert(payform.validateCardNumber('6799990100000000019'), 'maestro')
 
       assert(payform.validateCardNumber('6007220000000004'), 'forbrugsforeningen')
 
