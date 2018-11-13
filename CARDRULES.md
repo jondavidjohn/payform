@@ -75,7 +75,7 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 
 ### Maestro <img src="https://user-images.githubusercontent.com/6437556/45498343-d17d2200-b747-11e8-8a17-7768071a0f2f.png" width="30" height="20">
 
-**IIN Pattern:** 5018, 5020, 5038, 6304, 6703, 6708, 6759, 676[1-3] <sup>[12]</sup>
+**IIN Pattern:** 5018, 5020, 5038, 6304, 639000 to 639099, 670000 to 679999 <sup>[12], [13]</sup>
 
 **Length:** 12-19
 
@@ -99,6 +99,7 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 [10]: https://github.com/Adyen/adyen-magento/issues/236
 [11]: https://tech.dibspayment.com/D2/Toolbox/Test_information/Cards
 [12]: http://blog.unibulmerchantservices.com/12-signs-of-a-valid-mastercard-card/
+[13]: https://www.mastercard.us/content/dam/mccom/global/documents/mastercard-rules.pdf
 
 
 

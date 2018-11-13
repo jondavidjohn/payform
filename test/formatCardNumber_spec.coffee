@@ -8,6 +8,7 @@ describe 'payform', ->
       assert.equal payform.formatCardNumber('42424242'), '4242 4242'
       assert.equal payform.formatCardNumber('4242424242'), '4242 4242 42'
       assert.equal payform.formatCardNumber('4242424242424242'), '4242 4242 4242 4242'
+      assert.equal payform.formatCardNumber('4242424242424242424'), '4242 4242 4242 4242 424'
 
     it 'should format amex cc number correctly', ->
       assert.equal payform.formatCardNumber('37828'), '3782 8'
