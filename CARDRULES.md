@@ -100,6 +100,3 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 [11]: https://tech.dibspayment.com/D2/Toolbox/Test_information/Cards
 [12]: http://blog.unibulmerchantservices.com/12-signs-of-a-valid-mastercard-card/
 [13]: https://www.mastercard.us/content/dam/mccom/global/documents/mastercard-rules.pdf
-
-
-
