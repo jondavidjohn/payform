@@ -65,6 +65,7 @@ describe 'payform', ->
       assert(payform.validateCardNumber('38520000023237'), 'dinersclub')
       assert(payform.validateCardNumber('36700102000000'), 'dinersclub')
       assert(payform.validateCardNumber('36148900647913'), 'dinersclub')
+      assert(payform.validateCardNumber('30932281347102'), 'dinersclub')
 
       assert(payform.validateCardNumber('6011111111111117'), 'discover')
       assert(payform.validateCardNumber('6011000990139424'), 'discover')

@@ -12,7 +12,7 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 
 ### Diners Club <img src="https://user-images.githubusercontent.com/6437556/45498174-8400b500-b747-11e8-9afd-85ea2441a9be.png" width="30" height="20">
 
-**IIN Pattern:** 36, 38, 30[0-5] <sup>[3]</sup>
+**IIN Pattern:** 36, 38, 30[0-5]<sup>[3]</sup>, 309<sup>[13]</sup>
 
 **Length:** 14 <sup>[3]</sup>
 
@@ -99,6 +99,7 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 [10]: https://github.com/Adyen/adyen-magento/issues/236
 [11]: https://tech.dibspayment.com/D2/Toolbox/Test_information/Cards
 [12]: http://blog.unibulmerchantservices.com/12-signs-of-a-valid-mastercard-card/
+[13]: https://en.wikipedia.org/wiki/Payment_card_number#Issuer_identification_number_(IIN)
 
 
 
