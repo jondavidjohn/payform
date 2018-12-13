@@ -37,7 +37,7 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 ### Mastercard <img src="https://user-images.githubusercontent.com/6437556/45498138-73503f00-b747-11e8-832d-aa23b5eab2a5.png" width="30" height="20">
 
 
-**IIN Pattern:** 5[1-5], 677189 ,222[1-9], 2[3-6][0-9][0-9], 27[0-1][0-9], 2720 <sup>[1], [6]</sup>
+**IIN Pattern:** 222100...272099, 510000..559999, 677189 <sup>[1], [6], [13]</sup>
 
 **Length:** 16
 
