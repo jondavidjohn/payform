@@ -46,11 +46,16 @@
       listener(newEvt)
 
   _on = (ele, event, listener) ->
-    listener = _eventNormalize(listener)
     if ele.addEventListener?
       ele.addEventListener(event, listener, false)
     else
       ele.attachEvent("on#{event}", listener)
+
+  _off = (ele, event, listener) ->
+    if ele.removeEventListener?
+      ele.removeEventListener(event, listener, false)
+    else
+      ele.detachEvent("on#{event}", listener)
 
   payform = {}
 
@@ -436,37 +441,155 @@
 
   # Formatting
 
+  eventList = {
+    cvcInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictCVC),
+      },
+      {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(reFormatCVC),
+      },
+      {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatCVC),
+      },
+      {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatCVC),
+      },
+    ],
+
+    expiryInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictExpiry),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatCardExpiry),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatForwardSlashAndSpace),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatForwardExpiry),
+      },
+      {
+        eventName: 'keydown',
+        eventHandler: _eventNormalize(formatBackExpiry),
+      },
+      {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatExpiry),
+      },
+      {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatExpiry),
+      },
+    ],
+
+    cardNumberInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictCardNumber),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatCardNumber),
+      },
+      {
+        eventName: 'keydown',
+        eventHandler: _eventNormalize(formatBackCardNumber),
+      },
+      {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(reFormatCardNumber),
+      },
+      {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatCardNumber),
+      },
+      {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatCardNumber),
+      },
+    ],
+
+    numericInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'change',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'input',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+    ],
+  }
+
   payform.cvcInput = (input) ->
-    _on(input, 'keypress', restrictNumeric)
-    _on(input, 'keypress', restrictCVC)
-    _on(input, 'paste',    reFormatCVC)
-    _on(input, 'change',   reFormatCVC)
-    _on(input, 'input',    reFormatCVC)
+    for evt in eventList.cvcInput
+      _on(input, evt.eventName, evt.eventHandler)
+    return
 
   payform.expiryInput = (input) ->
-    _on(input, 'keypress', restrictNumeric)
-    _on(input, 'keypress', restrictExpiry)
-    _on(input, 'keypress', formatCardExpiry)
-    _on(input, 'keypress', formatForwardSlashAndSpace)
-    _on(input, 'keypress', formatForwardExpiry)
-    _on(input, 'keydown',  formatBackExpiry)
-    _on(input, 'change',   reFormatExpiry)
-    _on(input, 'input',    reFormatExpiry)
+    for evt in eventList.expiryInput
+      _on(input, evt.eventName, evt.eventHandler)
+    return
 
   payform.cardNumberInput = (input) ->
-    _on(input, 'keypress', restrictNumeric)
-    _on(input, 'keypress', restrictCardNumber)
-    _on(input, 'keypress', formatCardNumber)
-    _on(input, 'keydown',  formatBackCardNumber)
-    _on(input, 'paste',    reFormatCardNumber)
-    _on(input, 'change',   reFormatCardNumber)
-    _on(input, 'input',    reFormatCardNumber)
+    for evt in eventList.cardNumberInput
+      _on(input, evt.eventName, evt.eventHandler)
+    return
 
   payform.numericInput = (input) ->
-    _on(input, 'keypress', restrictNumeric)
-    _on(input, 'paste',    restrictNumeric)
-    _on(input, 'change',   restrictNumeric)
-    _on(input, 'input',    restrictNumeric)
+    for evt in eventList.numericInput
+      _on(input, evt.eventName, evt.eventHandler)
+    return
+
+  payform.detachCvcInput = (input) ->
+    for evt in eventList.cvcInput
+      _off(input, evt.eventName, evt.eventHandler)
+    return
+
+  payform.detachExpiryInput = (input) ->
+    for evt in eventList.expiryInput
+      _off(input, evt.eventName, evt.eventHandler)
+    return
+
+  payform.detachCardNumberInput = (input) ->
+    for evt in eventList.cardNumberInput
+      _off(input, evt.eventName, evt.eventHandler)
+    return
+
+  payform.detachNumericInput = (input) ->
+    for evt in eventList.numericInput
+      _off(input, evt.eventName, evt.eventHandler)
+    return
 
   # Validations
 
