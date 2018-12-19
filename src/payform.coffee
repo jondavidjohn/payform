@@ -147,7 +147,7 @@
     }
     {
       type: 'dinersclub'
-      pattern: /^(36|38|30[0-59])/
+      pattern: /^(36|3[89]|30[0-59])/
       format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/
       length: [14]
       cvcLength: [3]
