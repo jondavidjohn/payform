@@ -551,45 +551,37 @@
     ],
   }
 
-  payform.cvcInput = (input) ->
-    for evt in eventList.cvcInput
-      _on(input, evt.eventName, evt.eventHandler)
+  attachEvents = (input, events, detach) ->
+    for evt in events
+      if (detach)
+        _off(input, evt.eventName, evt.eventHandler)
+      else
+        _on(input, evt.eventName, evt.eventHandler)
     return
+
+  payform.cvcInput = (input) ->
+    attachEvents(input, eventList.cvcInput)
 
   payform.expiryInput = (input) ->
-    for evt in eventList.expiryInput
-      _on(input, evt.eventName, evt.eventHandler)
-    return
+    attachEvents(input, eventList.expiryInput)
 
   payform.cardNumberInput = (input) ->
-    for evt in eventList.cardNumberInput
-      _on(input, evt.eventName, evt.eventHandler)
-    return
+    attachEvents(input, eventList.cardNumberInput)
 
   payform.numericInput = (input) ->
-    for evt in eventList.numericInput
-      _on(input, evt.eventName, evt.eventHandler)
-    return
+    attachEvents(input, eventList.numericInput)
 
   payform.detachCvcInput = (input) ->
-    for evt in eventList.cvcInput
-      _off(input, evt.eventName, evt.eventHandler)
-    return
+    attachEvents(input, eventList.cvcInput, true)
 
   payform.detachExpiryInput = (input) ->
-    for evt in eventList.expiryInput
-      _off(input, evt.eventName, evt.eventHandler)
-    return
+    attachEvents(input, eventList.expiryInput, true)
 
   payform.detachCardNumberInput = (input) ->
-    for evt in eventList.cardNumberInput
-      _off(input, evt.eventName, evt.eventHandler)
-    return
+    attachEvents(input, eventList.cardNumberInput, true)
 
   payform.detachNumericInput = (input) ->
-    for evt in eventList.numericInput
-      _off(input, evt.eventName, evt.eventHandler)
-    return
+    attachEvents(input, eventList.numericInput, true)
 
   # Validations
 
