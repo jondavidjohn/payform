@@ -17,6 +17,18 @@ payform = require(2);
     },
     formatNumeric: function() {
       return payform.numericInput(this.get(0));
+    },
+    detachFormatCardNumber: function() {
+      return payform.detachCardNumberInput(this.get(0));
+    },
+    detachFormatCardExpiry: function() {
+      return payform.detachExpiryInput(this.get(0));
+    },
+    detachFormatCardCVC: function() {
+      return payform.detachCvcInput(this.get(0));
+    },
+    detachFormatNumeric: function() {
+      return payform.detachNumericInput(this.get(0));
     }
   };
   return $.fn.payform = function(method) {
@@ -36,7 +48,7 @@ payform = require(2);
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.3.0
+  Version: 1.4.0
  */
 var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
@@ -49,7 +61,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     return this[name] = definition();
   }
 })('payform', function() {
-  var _eventNormalize, _getCaretPos, _on, cardFromNumber, cardFromType, defaultFormat, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, getDirectionality, hasTextSelected, keyCodes, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
+  var _eventNormalize, _getCaretPos, _off, _on, attachEvents, cardFromNumber, cardFromType, defaultFormat, eventList, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, getDirectionality, hasTextSelected, keyCodes, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
   _getCaretPos = function(ele) {
     var r, rc, re;
     if (ele.selectionStart != null) {
@@ -91,11 +103,17 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     };
   };
   _on = function(ele, event, listener) {
-    listener = _eventNormalize(listener);
     if (ele.addEventListener != null) {
       return ele.addEventListener(event, listener, false);
     } else {
       return ele.attachEvent("on" + event, listener);
+    }
+  };
+  _off = function(ele, event, listener) {
+    if (ele.removeEventListener != null) {
+      return ele.removeEventListener(event, listener, false);
+    } else {
+      return ele.detachEvent("on" + event, listener);
     }
   };
   payform = {};
@@ -124,7 +142,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       luhn: true
     }, {
       type: 'maestro',
-      pattern: /^(5018|5020|5038|6304|6703|6708|6759|676[1-3])/,
+      pattern: /^(5018|5020|5038|6304|6390[0-9]{2}|67[0-9]{4})/,
       format: defaultFormat,
       length: [12, 13, 14, 15, 16, 17, 18, 19],
       cvcLength: [3],
@@ -152,7 +170,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       luhn: true
     }, {
       type: 'mastercard',
-      pattern: /^(5[1-5]|677189)|^(222[1-9]|2[3-6]\d{2}|27[0-1]\d|2720)/,
+      pattern: /^(5[1-5][0-9]{4}|677189)|^(222[1-9]|2[3-6]\d{2}|27[0-1]\d|2720)([0-9]{2})/,
       format: defaultFormat,
       length: [16],
       cvcLength: [3],
@@ -507,37 +525,126 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       return e.preventDefault();
     }
   };
+  eventList = {
+    cvcInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric)
+      }, {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictCVC)
+      }, {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(reFormatCVC)
+      }, {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatCVC)
+      }, {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatCVC)
+      }
+    ],
+    expiryInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric)
+      }, {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictExpiry)
+      }, {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatCardExpiry)
+      }, {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatForwardSlashAndSpace)
+      }, {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatForwardExpiry)
+      }, {
+        eventName: 'keydown',
+        eventHandler: _eventNormalize(formatBackExpiry)
+      }, {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatExpiry)
+      }, {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatExpiry)
+      }
+    ],
+    cardNumberInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric)
+      }, {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictCardNumber)
+      }, {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatCardNumber)
+      }, {
+        eventName: 'keydown',
+        eventHandler: _eventNormalize(formatBackCardNumber)
+      }, {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(reFormatCardNumber)
+      }, {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatCardNumber)
+      }, {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatCardNumber)
+      }
+    ],
+    numericInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric)
+      }, {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(restrictNumeric)
+      }, {
+        eventName: 'change',
+        eventHandler: _eventNormalize(restrictNumeric)
+      }, {
+        eventName: 'input',
+        eventHandler: _eventNormalize(restrictNumeric)
+      }
+    ]
+  };
+  attachEvents = function(input, events, detach) {
+    var evt, i, len;
+    for (i = 0, len = events.length; i < len; i++) {
+      evt = events[i];
+      if (detach) {
+        _off(input, evt.eventName, evt.eventHandler);
+      } else {
+        _on(input, evt.eventName, evt.eventHandler);
+      }
+    }
+  };
   payform.cvcInput = function(input) {
-    _on(input, 'keypress', restrictNumeric);
-    _on(input, 'keypress', restrictCVC);
-    _on(input, 'paste', reFormatCVC);
-    _on(input, 'change', reFormatCVC);
-    return _on(input, 'input', reFormatCVC);
+    return attachEvents(input, eventList.cvcInput);
   };
   payform.expiryInput = function(input) {
-    _on(input, 'keypress', restrictNumeric);
-    _on(input, 'keypress', restrictExpiry);
-    _on(input, 'keypress', formatCardExpiry);
-    _on(input, 'keypress', formatForwardSlashAndSpace);
-    _on(input, 'keypress', formatForwardExpiry);
-    _on(input, 'keydown', formatBackExpiry);
-    _on(input, 'change', reFormatExpiry);
-    return _on(input, 'input', reFormatExpiry);
+    return attachEvents(input, eventList.expiryInput);
   };
   payform.cardNumberInput = function(input) {
-    _on(input, 'keypress', restrictNumeric);
-    _on(input, 'keypress', restrictCardNumber);
-    _on(input, 'keypress', formatCardNumber);
-    _on(input, 'keydown', formatBackCardNumber);
-    _on(input, 'paste', reFormatCardNumber);
-    _on(input, 'change', reFormatCardNumber);
-    return _on(input, 'input', reFormatCardNumber);
+    return attachEvents(input, eventList.cardNumberInput);
   };
   payform.numericInput = function(input) {
-    _on(input, 'keypress', restrictNumeric);
-    _on(input, 'paste', restrictNumeric);
-    _on(input, 'change', restrictNumeric);
-    return _on(input, 'input', restrictNumeric);
+    return attachEvents(input, eventList.numericInput);
+  };
+  payform.detachCvcInput = function(input) {
+    return attachEvents(input, eventList.cvcInput, true);
+  };
+  payform.detachExpiryInput = function(input) {
+    return attachEvents(input, eventList.expiryInput, true);
+  };
+  payform.detachCardNumberInput = function(input) {
+    return attachEvents(input, eventList.cardNumberInput, true);
+  };
+  payform.detachNumericInput = function(input) {
+    return attachEvents(input, eventList.numericInput, true);
   };
   payform.parseCardExpiry = function(value) {
     var month, prefix, ref, year;

@@ -43,6 +43,10 @@ describe 'payform', ->
       assert(payform.validateCardNumber('4917300800000000'), 'visaelectron')
 
       assert(payform.validateCardNumber('6759649826438453'), 'maestro')
+      assert(payform.validateCardNumber('639002000000000003'), 'maestro')
+      assert(payform.validateCardNumber('6771798021000008'), 'maestro')
+      assert(payform.validateCardNumber('6771830999991239'), 'maestro')
+      assert(payform.validateCardNumber('6799990100000000019'), 'maestro')
 
       assert(payform.validateCardNumber('6007220000000004'), 'forbrugsforeningen')
 
@@ -54,8 +58,11 @@ describe 'payform', ->
       assert(payform.validateCardNumber('4462030000000000'), 'visa')
       assert(payform.validateCardNumber('4484070000000000'), 'visa')
 
+      assert(payform.validateCardNumber('5105105105105100'), 'mastercard')
       assert(payform.validateCardNumber('5555555555554444'), 'mastercard')
       assert(payform.validateCardNumber('5454545454545454'), 'mastercard')
+      assert(payform.validateCardNumber('2223000048400011'), 'mastercard')
+      assert(payform.validateCardNumber('2720990010089800'), 'mastercard')
 
       assert(payform.validateCardNumber('378282246310005'), 'amex')
       assert(payform.validateCardNumber('371449635398431'), 'amex')

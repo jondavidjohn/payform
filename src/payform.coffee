@@ -4,7 +4,7 @@
   URL: https://github.com/jondavidjohn/payform
   Author: Jonathan D. Johnson <me@jondavidjohn.com>
   License: MIT
-  Version: 1.3.0
+  Version: 1.4.0
 ###
 ((name, definition) ->
   if module?
@@ -46,11 +46,16 @@
       listener(newEvt)
 
   _on = (ele, event, listener) ->
-    listener = _eventNormalize(listener)
     if ele.addEventListener?
       ele.addEventListener(event, listener, false)
     else
       ele.attachEvent("on#{event}", listener)
+
+  _off = (ele, event, listener) ->
+    if ele.removeEventListener?
+      ele.removeEventListener(event, listener, false)
+    else
+      ele.detachEvent("on#{event}", listener)
 
   payform = {}
 
@@ -89,7 +94,7 @@
     }
     {
       type: 'maestro'
-      pattern: /^(5018|5020|5038|6304|6703|6708|6759|676[1-3])/
+      pattern: /^(5018|5020|5038|6304|6390[0-9]{2}|67[0-9]{4})/
       format: defaultFormat
       length: [12..19]
       cvcLength: [3]
@@ -122,7 +127,7 @@
     }
     {
       type: 'mastercard'
-      pattern: /^(5[1-5]|677189)|^(222[1-9]|2[3-6]\d{2}|27[0-1]\d|2720)/
+      pattern: /^(5[1-5][0-9]{4}|677189)|^(222[1-9]|2[3-6]\d{2}|27[0-1]\d|2720)([0-9]{2})/
       format: defaultFormat
       length: [16]
       cvcLength: [3]
@@ -436,37 +441,147 @@
 
   # Formatting
 
+  eventList = {
+    cvcInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictCVC),
+      },
+      {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(reFormatCVC),
+      },
+      {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatCVC),
+      },
+      {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatCVC),
+      },
+    ],
+
+    expiryInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictExpiry),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatCardExpiry),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatForwardSlashAndSpace),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatForwardExpiry),
+      },
+      {
+        eventName: 'keydown',
+        eventHandler: _eventNormalize(formatBackExpiry),
+      },
+      {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatExpiry),
+      },
+      {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatExpiry),
+      },
+    ],
+
+    cardNumberInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictCardNumber),
+      },
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(formatCardNumber),
+      },
+      {
+        eventName: 'keydown',
+        eventHandler: _eventNormalize(formatBackCardNumber),
+      },
+      {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(reFormatCardNumber),
+      },
+      {
+        eventName: 'change',
+        eventHandler: _eventNormalize(reFormatCardNumber),
+      },
+      {
+        eventName: 'input',
+        eventHandler: _eventNormalize(reFormatCardNumber),
+      },
+    ],
+
+    numericInput: [
+      {
+        eventName: 'keypress',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'paste',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'change',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+      {
+        eventName: 'input',
+        eventHandler: _eventNormalize(restrictNumeric),
+      },
+    ],
+  }
+
+  attachEvents = (input, events, detach) ->
+    for evt in events
+      if (detach)
+        _off(input, evt.eventName, evt.eventHandler)
+      else
+        _on(input, evt.eventName, evt.eventHandler)
+    return
+
   payform.cvcInput = (input) ->
-    _on(input, 'keypress', restrictNumeric)
-    _on(input, 'keypress', restrictCVC)
-    _on(input, 'paste',    reFormatCVC)
-    _on(input, 'change',   reFormatCVC)
-    _on(input, 'input',    reFormatCVC)
+    attachEvents(input, eventList.cvcInput)
 
   payform.expiryInput = (input) ->
-    _on(input, 'keypress', restrictNumeric)
-    _on(input, 'keypress', restrictExpiry)
-    _on(input, 'keypress', formatCardExpiry)
-    _on(input, 'keypress', formatForwardSlashAndSpace)
-    _on(input, 'keypress', formatForwardExpiry)
-    _on(input, 'keydown',  formatBackExpiry)
-    _on(input, 'change',   reFormatExpiry)
-    _on(input, 'input',    reFormatExpiry)
+    attachEvents(input, eventList.expiryInput)
 
   payform.cardNumberInput = (input) ->
-    _on(input, 'keypress', restrictNumeric)
-    _on(input, 'keypress', restrictCardNumber)
-    _on(input, 'keypress', formatCardNumber)
-    _on(input, 'keydown',  formatBackCardNumber)
-    _on(input, 'paste',    reFormatCardNumber)
-    _on(input, 'change',   reFormatCardNumber)
-    _on(input, 'input',    reFormatCardNumber)
+    attachEvents(input, eventList.cardNumberInput)
 
   payform.numericInput = (input) ->
-    _on(input, 'keypress', restrictNumeric)
-    _on(input, 'paste',    restrictNumeric)
-    _on(input, 'change',   restrictNumeric)
-    _on(input, 'input',    restrictNumeric)
+    attachEvents(input, eventList.numericInput)
+
+  payform.detachCvcInput = (input) ->
+    attachEvents(input, eventList.cvcInput, true)
+
+  payform.detachExpiryInput = (input) ->
+    attachEvents(input, eventList.expiryInput, true)
+
+  payform.detachCardNumberInput = (input) ->
+    attachEvents(input, eventList.cardNumberInput, true)
+
+  payform.detachNumericInput = (input) ->
+    attachEvents(input, eventList.numericInput, true)
 
   # Validations
 
