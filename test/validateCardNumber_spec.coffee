@@ -54,8 +54,11 @@ describe 'payform', ->
       assert(payform.validateCardNumber('4462030000000000'), 'visa')
       assert(payform.validateCardNumber('4484070000000000'), 'visa')
 
+      assert(payform.validateCardNumber('5105105105105100'), 'mastercard')
       assert(payform.validateCardNumber('5555555555554444'), 'mastercard')
       assert(payform.validateCardNumber('5454545454545454'), 'mastercard')
+      assert(payform.validateCardNumber('2223000048400011'), 'mastercard')
+      assert(payform.validateCardNumber('2720990010089800'), 'mastercard')
 
       assert(payform.validateCardNumber('378282246310005'), 'amex')
       assert(payform.validateCardNumber('371449635398431'), 'amex')
