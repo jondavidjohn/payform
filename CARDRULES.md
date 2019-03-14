@@ -26,7 +26,7 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 
 **IIN Pattern:** 384100, 384140, 384160, 606282, 637095, 637568, 60(?!11) <sup> [4], [5]</sup>
 
-**Length:** 14-19 
+**Length:** 14-19
 
 ### JCB <img src="https://user-images.githubusercontent.com/6437556/45514600-c2ac6480-b773-11e8-9565-b24839dfa816.png" width="30" height="20">
 
@@ -53,7 +53,7 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 
 **Length:** 13, 16, 19
 
-## Debit Cards 
+## Debit Cards
 
 ### Dankkort
 
@@ -100,6 +100,5 @@ The following list contains Issuer Identification Number (IIN) patterns and leng
 [11]: https://tech.dibspayment.com/D2/Toolbox/Test_information/Cards
 [12]: http://blog.unibulmerchantservices.com/12-signs-of-a-valid-mastercard-card/
 [13]: https://en.wikipedia.org/wiki/Payment_card_number#Issuer_identification_number_(IIN)
-
 
 
