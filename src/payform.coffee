@@ -94,7 +94,7 @@
     }
     {
       type: 'maestro'
-      pattern: /^(5018|5020|5038|6304|6390[0-9]{2}|67[0-9]{4})/
+      pattern: /^(5018|5020|5038|6304|6703|6708|6759|676[1-3])/
       format: defaultFormat
       length: [12..19]
       cvcLength: [3]
@@ -152,7 +152,7 @@
     }
     {
       type: 'dinersclub'
-      pattern: /^(36|38|30[0-5])/
+      pattern: /^(36|3[89]|30[0-59])/
       format: /(\d{1,4})(\d{1,6})?(\d{1,4})?/
       length: [14]
       cvcLength: [3]
