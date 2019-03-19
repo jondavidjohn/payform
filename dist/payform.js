@@ -273,15 +273,15 @@
       e.target.value = payform.formatCardNumber(e.target.value);
       if (getDirectionality(e.target) === 'ltr' && cursor !== e.target.selectionStart && isCardNumberPaste === true) {
         cursor = _getCaretPos(e.target);
+        isCardNumberPaste = false;
       }
       if (getDirectionality(e.target) === 'rtl' && e.target.value.indexOf('‎\u200e') === -1) {
         e.target.value = '‎\u200e'.concat(e.target.value);
         cursor = _getCaretPos(e.target);
       }
       if ((cursor != null) && cursor !== 0 && e.type !== 'change') {
-        e.target.setSelectionRange(cursor, cursor);
+        return e.target.setSelectionRange(cursor, cursor);
       }
-      return isCardNumberPaste = false;
     };
     formatCardNumber = function(e) {
       var card, cursor, digit, length, re, upperLength, value;

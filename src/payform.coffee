@@ -262,6 +262,7 @@
 
     if getDirectionality(e.target) == 'ltr' and cursor isnt e.target.selectionStart and isCardNumberPaste is true
       cursor = _getCaretPos(e.target)
+      isCardNumberPaste = false
 
     if getDirectionality(e.target) == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
       e.target.value = '‎\u200e'.concat(e.target.value)
@@ -269,8 +270,6 @@
 
     if cursor? and cursor isnt 0 and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
-
-    isCardNumberPaste = false
 
   formatCardNumber = (e) ->
     # Only format if input is a number
