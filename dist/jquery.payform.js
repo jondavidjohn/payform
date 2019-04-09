@@ -61,7 +61,7 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     return this[name] = definition();
   }
 })('payform', function() {
-  var _eventNormalize, _getCaretPos, _off, _on, attachEvents, cardFromNumber, cardFromType, defaultFormat, eventList, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, getDirectionality, hasTextSelected, isCardNumberPaste, keyCodes, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
+  var _eventNormalize, _getCaretPos, _off, _on, attachEvents, cardFromNumber, cardFromType, defaultFormat, eventList, formatBackCardNumber, formatBackExpiry, formatCardExpiry, formatCardNumber, formatForwardExpiry, formatForwardSlashAndSpace, getDirectionality, hasTextSelected, keyCodes, luhnCheck, payform, reFormatCVC, reFormatCardNumber, reFormatExpiry, replaceFullWidthChars, restrictCVC, restrictCardNumber, restrictExpiry, restrictNumeric;
   _getCaretPos = function(ele) {
     var r, rc, re;
     if (ele.selectionStart != null) {
@@ -298,12 +298,8 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
     }
     return value;
   };
-  isCardNumberPaste = false;
   reFormatCardNumber = function(e) {
     var cursor;
-    if (e.type === 'paste') {
-      isCardNumberPaste = true;
-    }
     cursor = _getCaretPos(e.target);
     if (e.target.value === "") {
       return;
@@ -312,14 +308,13 @@ var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i 
       cursor = _getCaretPos(e.target);
     }
     e.target.value = payform.formatCardNumber(e.target.value);
-    if (getDirectionality(e.target) === 'ltr' && cursor !== e.target.selectionStart && isCardNumberPaste === true) {
+    if (getDirectionality(e.target) === 'ltr' && cursor !== e.target.selectionStart) {
       cursor = _getCaretPos(e.target);
-      isCardNumberPaste = false;
     }
     if (getDirectionality(e.target) === 'rtl' && e.target.value.indexOf('‎\u200e') === -1) {
       e.target.value = '‎\u200e'.concat(e.target.value);
-      cursor = _getCaretPos(e.target);
     }
+    cursor = _getCaretPos(e.target);
     if ((cursor != null) && cursor !== 0 && e.type !== 'change') {
       return e.target.setSelectionRange(cursor, cursor);
     }
