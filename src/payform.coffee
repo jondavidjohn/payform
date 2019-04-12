@@ -246,8 +246,12 @@
     value
 
   # Format Card Number
+  isCardNumberPaste = false
 
   reFormatCardNumber = (e) ->
+    if e.type is 'paste'
+      isCardNumberPaste = true
+
     cursor = _getCaretPos(e.target)
     return if e.target.value is ""
 
@@ -256,14 +260,14 @@
 
     e.target.value = payform.formatCardNumber(e.target.value)
 
-    if getDirectionality(e.target) == 'ltr' and cursor isnt e.target.selectionStart
+    if getDirectionality(e.target) == 'ltr' and cursor isnt e.target.selectionStart and isCardNumberPaste is true
       cursor = _getCaretPos(e.target)
+      isCardNumberPaste = false
 
     if getDirectionality(e.target) == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
       e.target.value = '‎\u200e'.concat(e.target.value)
-      
-    cursor = _getCaretPos(e.target)
-    
+      cursor = _getCaretPos(e.target)
+
     if cursor? and cursor isnt 0 and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
 
