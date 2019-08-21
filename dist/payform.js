@@ -487,10 +487,10 @@
     eventList = {
       cvcInput: [
         {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(restrictNumeric)
         }, {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(restrictCVC)
         }, {
           eventName: 'paste',
@@ -505,19 +505,19 @@
       ],
       expiryInput: [
         {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(restrictNumeric)
         }, {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(restrictExpiry)
         }, {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(formatCardExpiry)
         }, {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(formatForwardSlashAndSpace)
         }, {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(formatForwardExpiry)
         }, {
           eventName: 'keydown',
@@ -532,13 +532,13 @@
       ],
       cardNumberInput: [
         {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(restrictNumeric)
         }, {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(restrictCardNumber)
         }, {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(formatCardNumber)
         }, {
           eventName: 'keydown',
@@ -556,7 +556,7 @@
       ],
       numericInput: [
         {
-          eventName: 'keypress',
+          eventName: 'textInput',
           eventHandler: _eventNormalize(restrictNumeric)
         }, {
           eventName: 'paste',

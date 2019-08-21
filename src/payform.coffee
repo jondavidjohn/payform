@@ -60,12 +60,12 @@
   payform = {}
 
   # Key Codes
-  
+
   keyCodes = {
     UNKNOWN : 0,
     BACKSPACE : 8,
     PAGE_UP : 33,
-    ARROW_LEFT : 37, 
+    ARROW_LEFT : 37,
     ARROW_RIGHT : 39,
   }
 
@@ -261,9 +261,9 @@
 
     if getDirectionality(e.target) == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
       e.target.value = '‎\u200e'.concat(e.target.value)
-      
+
     cursor = _getCaretPos(e.target)
-    
+
     if cursor? and cursor isnt 0 and e.type isnt 'change'
       e.target.setSelectionRange(cursor, cursor)
 
@@ -326,7 +326,7 @@
   reFormatExpiry = (e) ->
     return if e.target.value is ""
     e.target.value = payform.formatCardExpiry(e.target.value)
-    if getDirectionality(e.target) == 'rtl' and e.target.value.indexOf('‎\u200e') == -1 
+    if getDirectionality(e.target) == 'rtl' and e.target.value.indexOf('‎\u200e') == -1
       e.target.value = '‎\u200e'.concat(e.target.value)
     cursor = _getCaretPos(e.target)
     if cursor? and e.type isnt 'change'
@@ -444,11 +444,11 @@
   eventList = {
     cvcInput: [
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(restrictNumeric),
       },
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(restrictCVC),
       },
       {
@@ -467,23 +467,23 @@
 
     expiryInput: [
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(restrictNumeric),
       },
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(restrictExpiry),
       },
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(formatCardExpiry),
       },
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(formatForwardSlashAndSpace),
       },
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(formatForwardExpiry),
       },
       {
@@ -502,15 +502,15 @@
 
     cardNumberInput: [
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(restrictNumeric),
       },
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(restrictCardNumber),
       },
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(formatCardNumber),
       },
       {
@@ -533,7 +533,7 @@
 
     numericInput: [
       {
-        eventName: 'keypress',
+        eventName: 'textInput',
         eventHandler: _eventNormalize(restrictNumeric),
       },
       {
